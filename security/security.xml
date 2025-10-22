@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record model="res.groups" id="group_sale_asesor">
+        <field name="name">Asesor de ventas</field>
+        <!-- <field name="category_id" ref="base.module_category_sales"/> -->
+    </record>
+
+</odoo>

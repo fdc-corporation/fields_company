@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<template id="external_layout_wave_id" name="external_layout_wave" inherit_id="web.external_layout_wave">
+		<xpath expr="//div[contains(@t-attf-class, 'header')]" position="replace">
+			<div t-attf-class="header o_company_#{company.id}_layout {{report_type != 'pdf' and 'h-0'}}">
+				<div class="row" style="padding:35px 0px 0px 0px;">
+					<div class="col-4 mb4 mt4">
+						<img t-if="company.logo" t-att-src="image_data_uri(company.logo)" style="max-height: 180px;margin:-20px 0px 0px 0px;" alt="Logo" />
+					</div>
+					<div class="col-4 mb4" style="text-align:center;">
+						<p style="margin-bottom:-1px; font-size:13px;">
+							FDC CORPORATION E.I.R.L
+						</p>
+						<p style="margin-bottom:-1px; font-size:12px;">
+							Av. Separadora Industrial 2103
+						</p>
+						<p style="margin-bottom:-1px; font-size:12px;">
+							Lima - Ate - 15011
+						</p>
+						<p style="margin-bottom:-1px; font-size:12px;">
+							20601356326
+						</p>
+						<p style="margin-bottom:-1px; font-size:11px; font-family: 'Courgette', cursive; ">
+							Ofrecemos soluciones..... Generamos Confianza
+						</p>
+					</div>
+					<div class="col-4">
+						<t t-set="comp" t-value="company._name == 'base.document.layout' and company.company_id or company"/>
+
+                        <!-- Ahora comp siempre es res.company -->
+                        <img t-if="comp and comp.icono_document" style="width:250px; height:150px; float:right;" t-att-src="image_data_uri(comp.icono_document)"/>
+					</div>
+				</div>
+			</div>
+		</xpath>
+		<xpath expr="//div[contains(@t-attf-class, 'footer')]" position="replace">
+			<div t-attf-class="footer o_company_#{company.id}_layout {{report_type != 'pdf' and 'position-relative mt-auto mx-n5'}}">
+				<div class="row" style="border-top: 1px solid black;">
+					<div class="col-4 text-start">
+						<p style="font-size:12px;margin:0px 0px -4px 0px;">
+							servicios@fdc-corporation.com
+						</p>
+						<p style="font-size:12px;margin:0px 0px -4px 0px;">
+							ventas@fdc-corporation.com
+						</p>
+					</div>
+					<div class="text-center col-4">
+						<ul class="" />
+						<p style="font-size:12px;margin:0px 0px -3px 0px;">
+							https://fdc-corporation.com
+						</p>
+						<div t-if="report_type == 'pdf'" class="text-muted">
+							<font style="vertical-align: inherit;">
+								<font style="vertical-align: inherit;">
+									<font style="vertical-align: inherit;">
+										<font style="vertical-align: inherit;">
+											Página:
+										</font>
+									</font>
+								</font>
+							</font>
+							<span class="page" />
+							<font style="vertical-align: inherit;">
+								<font style="vertical-align: inherit;">
+									/
+								</font>
+							</font>
+							<span class="topage" />
+						</div>
+						<div t-if="report_type == 'pdf' and display_name_in_footer" class="text-muted">
+							<span t-out="o.name">
+								<font style="vertical-align: inherit;">
+									<font style="vertical-align: inherit;">
+										(nombre del documento)
+									</font>
+								</font>
+							</span>
+						</div>
+					</div>
+					<div class=" text-end col-4">
+						<p style="font-size:12px;margin:0px 0px -4px 0px;">
+							+51 981 094 754
+						</p>
+						<p style="font-size:12px;">
+							+51 960 217 220
+						</p>
+					</div>
+				</div>
+			</div>
+		</xpath>
+	</template>
+</odoo>

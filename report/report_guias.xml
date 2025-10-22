@@ -1,0 +1,517 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+        <record id="paperformat_a4_guias" model="report.paperformat">
+            <field name="name">A4 - Guías</field>
+            <field name="default" eval="False"/>
+            <field name="format">A4</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">10</field>
+            <field name="margin_bottom">20</field>
+            <field name="margin_left">7</field>
+            <field name="margin_right">7</field>
+            <field name="disable_shrinking" eval="True"/>
+            <field name="dpi">110</field>
+        </record>
+
+		<record id="action_reporte_guias" model="ir.actions.report">
+			<field name="name">Guia Electronica</field>
+			<field name="model">stock.picking</field>
+			<field name="report_type">qweb-pdf</field>
+			<field name="report_name">fields_company.report_guias</field>
+			<field name="report_file">fields_company.report_guias</field>
+			<field name="binding_model_id" ref="stock.model_stock_picking" />
+			<field name="binding_type">report</field>
+            <field name="print_report_name">'Guia - %s' % (object.partner_id.name)</field>
+            <field name="paperformat_id" ref="fields_company.paperformat_a4_guias"/>
+		</record>
+
+
+		<template id="report_guias">
+			<t t-name="web.basic_layout">
+				<t t-foreach="docs" t-as="doc">
+					<t t-call="web.html_container">
+                        <t t-if="not o" t-set="o" t-value="doc"/>
+						<div class="article" t-att-data-oe-model="o and o._name" t-att-data-oe-id="o and o.id" t-att-data-oe-lang="o and o.env.context.get('lang')">
+							<!--
+							Header
+							<div class="header o_company_#{company.id}_layout factura" t-att-style="report_header_style">
+							-->
+							<div class="header " style="font-family: Monaco; font-size: 16px;">
+								<div class="row">
+									<div class="col-4 col-xs-4 ">
+										<img t-if="o.company_id.logo" t-att-src="image_data_uri(o.company_id.logo)" style="width:220px;top: 30%;" alt="Logo" />
+									</div>
+									<div class="col-4 empresa text-center" name="company_address">
+										<strong style="font-size:14px;">
+											<t t-esc="o.company_id.name" />
+										</strong>
+										<br />
+										<span style="font-size:13px;" t-esc="o.company_id.street" />
+										<br />
+										<span style="font-size:13px;" t-esc="o.company_id.partner_id.l10n_pe_district.name" />
+										-
+										<span style="font-size:13px;" t-esc="o.company_id.state_id.name" />
+										-
+										<span style="font-size:13px;" t-esc="o.company_id.city" />
+										<br />
+										<span style="font-size:13px;" t-if="o.company_id.phone">
+											Telf.:
+											<t t-esc="o.company_id.phone" />
+										</span>
+									</div>
+									<div class="col-4 text-right">
+										<div class="text-center" style="margin: 0px auto;padding:15px 20px;border-radius:10px;border: 1px solid #ddd !important;font-size: 16px;width: max-content;">
+											RUC:
+											<t t-esc="o.company_id.vat" />
+											<br />
+											<span style="font-size:13px;">
+												GUÍA DE REMISIÓN ELECTRÓNICA
+												<br />
+											</span>
+											<t t-if="o.l10n_latam_document_number" t-esc="o.l10n_latam_document_number" />
+											<t t-else="" t-esc="o.name" />
+										</div>
+									</div>
+								</div>
+							</div>
+							<!-- Body -->
+							<div class="" style="font-family: Monaco; font-size: 13px;">
+								<t t-set="o" t-value="o.with_context(lang=lang)" />
+								<table class="table" style="width:100%;font-size: 15px;border:0px;margin-top:-30px;">
+									<thead style="border:0px;">
+										<tr style="border:0px; background-color:#22629D;">
+											<td class="text-left pl-2" style="border:0px;color:white;font-size:15px;text-align: left;border-left:2px solid white;">
+												<b>
+													Dirección de llegada
+												</b>
+											</td>
+											<td class="text-left pl-2" style="border:0px;color:white;font-size:15px;text-align: left;border-left:2px solid white;">
+												<b>
+													Dirección de partida
+												</b>
+											</td>
+										</tr>
+									</thead>
+									<tbody style="border:0px;">
+										<tr style="border:0px;">
+											<t t-if="o.picking_type_id.name =='Traslados internos'">
+												<td style="border:0px;width: 50%;font-size:15px;">
+													<br />
+													<br />
+													<t t-esc="o.location_dest_id.warehouse_id.partner_id.street or ''" />
+													,
+													<t t-esc="o.location_dest_id.warehouse_id.partner_id.l10n_pe_district.name or ''" />
+													,
+													<t t-esc="o.location_dest_id.warehouse_id.partner_id.city_id.name or ''" />
+													,
+													<t t-esc="o.location_dest_id.warehouse_id.partner_id.state_id.name or ''" />
+													<t t-esc="o.partner_id.country_id.name or ''" />
+													<br />
+													<strong>
+														Fecha de entrega:
+													</strong>
+													<span t-esc="o.scheduled_date.strftime('%Y-%m-%d')" />
+												</td>
+											</t>
+											<t t-else="">
+												<td style="border:0px;width: 50%;font-size:15px;">
+													<br />
+													<br />
+													<t t-if="o.picking_type_id.name =='Órdenes de PdV' or o.picking_type_id.name =='Órdenes de entrega' ">
+														<t t-esc="o.partner_id.street or ''" />
+														<t t-esc="o.partner_id.l10n_pe_district.name or ''" />
+														,
+														<t t-esc="o.partner_id.city_id.name or ''" />
+														,
+														<t t-esc="o.partner_id.state_id.name or ''" />
+														,
+														<t t-esc="o.partner_id.country_id.name or ''" />
+													</t>
+													<t t-else="">
+														<t t-esc="o.picking_type_id.warehouse_id.partner_id.street or ''" />
+														,
+														<t t-esc="o.picking_type_id.warehouse_id.partner_id.l10n_pe_district.name or ''" />
+														,
+														<t t-esc="o.picking_type_id.warehouse_id.partner_id.city_id.name or ''" />
+														,
+														<t t-esc="o.picking_type_id.warehouse_id.partner_id.state_id.name or ''" />
+														<t t-esc="o.partner_id.country_id.name or ''" />
+													</t>
+													<br />
+													<strong>
+														Fecha de entrega:
+													</strong>
+													<span t-esc="o.scheduled_date.strftime('%Y-%m-%d')" />
+												</td>
+											</t>
+											<td style="border:0px;font-size:15px;">
+												<br />
+												<br />
+												<t t-if="o.picking_type_id.name =='Órdenes de PdV' or o.picking_type_id.name =='Órdenes de entrega'">
+													<t t-esc="o.picking_type_id.warehouse_id.partner_id.street or ''" />
+													,
+													<t t-esc="o.picking_type_id.warehouse_id.partner_id.l10n_pe_district.name or ''" />
+													,
+													<t t-esc="o.picking_type_id.warehouse_id.partner_id.city_id.name or ''" />
+													,
+													<t t-esc="o.picking_type_id.warehouse_id.partner_id.state_id.name or ''" />
+													<t t-esc="o.partner_id.country_id.name or ''" />
+												</t>
+												<t t-else="">
+													<t t-esc="o.partner_id.street or ''" />
+													<t t-esc="o.partner_id.l10n_pe_district.name or ''" />
+													,
+													<t t-esc="o.partner_id.city_id.name or ''" />
+													,
+													<t t-esc="o.partner_id.state_id.name or ''" />
+													,
+													<t t-esc="o.partner_id.country_id.name or ''" />
+												</t>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+								<table class="table" style="width:100%;font-size: 15px;border:0px;">
+									<thead style="border:0px;">
+										<tr style="border:0px; background-color:#22629D;">
+											<td class="text-left pl-2" style="border:0px;color:white;font-size:13px;text-align: left;border-left:2px solid white;">
+												<b>
+													Remitente
+												</b>
+											</td>
+											<td class="text-left pl-2" style="border:0px;color:white;font-size:13px;text-align: left;border-left:2px solid white;">
+												<b>
+													Destinatario
+												</b>
+											</td>
+										</tr>
+									</thead>
+									<tbody style="border:0px;">
+										<tr style="border:0px;">
+											<td style="border:0px;width: 50%;font-size:15px;">
+												<t t-esc="o.company_id.name" />
+												<br />
+												<strong>
+													RUC
+												</strong>
+												:
+												<span t-esc="o.company_id.vat" />
+											</td>
+											<td style="border:0px;font-size:15px;">
+												<t t-if="o.partner_id.parent_id">
+													<span t-esc="o.partner_id.parent_id.name" />
+													-
+													<span t-esc="o.partner_id.name" />
+													<br />
+													<strong>
+														RUC
+													</strong>
+													:
+													<span t-esc="o.partner_id.vat" />
+												</t>
+												<t t-else="">
+													<span t-esc="o.partner_id.name" />
+													<br />
+													<strong>
+														RUC
+													</strong>
+													:
+													<span t-esc="o.partner_id.vat" />
+												</t>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+								<table class="table" style="width:100%;font-size: 14px;border:0px;">
+									<!-- <t t-set="has_serial_number" t-value="False"/> -->
+									<!-- <t t-set="has_serial_number" t-value="o.move_line_ids.mapped('lot_id')"/> -->
+									<thead style="border:0px;">
+										<tr style="border:0px;background:white;color:white;">
+											<!-- <td style="border:0px;"> -->
+											<!-- <strong>CODBAR</strong> -->
+											<!-- </td> -->
+											<td style="border:0px;color:black;">
+												<strong>
+													DESCRIPCION
+												</strong>
+											</td>
+											<!-- <td style="border:0px;"> -->
+											<!-- <strong>LOTE/SERIE</strong> -->
+											<!-- </td> -->
+											<td style="border:0px;color:black;">
+												<strong>
+													CANTIDAD
+												</strong>
+											</td>
+											<td style="border:0px;color:black;">
+												<strong>
+													MEDIDA
+												</strong>
+											</td>
+										</tr>
+									</thead>
+									<tbody style="border:0px;">
+										<!-- Obtener productos únicos en líneas de movimiento -->
+										<!-- <t t-set="products" t-value="o.move_line_ids.mapped('product_id').filtered(lambda p: p)"/> -->
+										<t t-foreach="o.move_ids" t-as="product">
+											<tr style="border:0px;">
+												<td style="border:0px;">
+													<span t-esc="product.description_picking" />
+												</td>
+												<td style="border:0px;">
+													<span t-esc="product.quantity" />
+												</td>
+												<td style="border:0px;">
+													<span t-esc="product.product_uom.name" />
+												</td>
+											</tr>
+										</t>
+									</tbody>
+								</table>
+								<br />
+								<table class="table" style="width:100%;font-size: 15px;border:0px;">
+									<thead style="border:0px;">
+										<tr style="border:0px; background-color:#22629D;">
+											<td class="text-left pl-2" style="border:0px;color:white;font-size:15px;text-align: left;border-left:2px solid white;">
+												<b>
+													Transportista
+												</b>
+											</td>
+											<td class="text-left pl-2" style="border:0px;color:white;font-size:15px;text-align: left;border-left:2px solid white;">
+												<b>
+													Datos del transporte
+												</b>
+											</td>
+										</tr>
+									</thead>
+									<tbody style="border:0px;">
+										<tr style="border:0px;">
+											<td style="border:0px;width: 50%;">
+												<table class="table" style="border:0px;font-size:15px;">
+													<tbody style="border:0px;">
+														<t t-if="not o.l10n_pe_edi_transport_type == '01'">
+															<tr style="border:0px;">
+																<td style="border:0px;padding: 2px;">
+																	Empresa
+																</td>
+																<td style="border:0px;padding: 2px;">
+																	:
+																</td>
+																<td style="border:0px;padding: 2px;">
+																	<span t-esc="o.company_id.name" />
+																</td>
+															</tr>
+															<tr style="border:0px;">
+																<td style="border:0px;padding: 2px;">
+																	RUC
+																</td>
+																<td style="border:0px;padding: 2px;">
+																	:
+																</td>
+																<td style="border:0px;padding: 2px;">
+																	<span t-esc="o.company_id.vat" />
+																</td>
+															</tr>
+															<tr style="border:0px;">
+																<td style="border:0px;padding: 2px;">
+																	Conductor
+																</td>
+																<td style="border:0px;padding: 2px;">
+																	:
+																</td>
+																<td style="border:0px;padding: 2px;">
+																	<span t-esc="o.l10n_pe_edi_operator_id.name" />
+																</td>
+															</tr>
+															<tr style="border:0px;">
+																<td style="border:0px;padding: 2px;">
+																	DNI del conductor
+																</td>
+																<td style="border:0px;padding: 2px;">
+																	:
+																</td>
+																<td style="border:0px;padding: 2px;">
+																	<span t-esc="o.l10n_pe_edi_operator_id.vat" />
+																</td>
+															</tr>
+															<tr style="border:0px;">
+																<td style="border:0px;padding: 2px;">
+																	N° de licencia
+																</td>
+																<td style="border:0px;padding: 2px;">
+																	:
+																</td>
+																<td style="border:0px;padding: 2px;">
+																	<span t-esc="o.l10n_pe_edi_operator_id.l10n_pe_edi_operator_license" />
+																</td>
+															</tr>
+														</t>
+													</tbody>
+												</table>
+											</td>
+											<td style="border:0px;">
+												<table class="table" style="border:0px;font-size:15px;">
+													<tbody style="border:0px;">
+														<t t-if="not o.l10n_pe_edi_transport_type == '01'">
+															<!-- <t t-foreach="o.pe_fleet_ids" t-as="fleet_id"> -->
+															<tr style="border:0px;">
+																<td style="border:0px;padding: 2px;">
+																	Marca del vehículo
+																</td>
+																<td style="border:0px;padding: 2px;">
+																	:
+																</td>
+																<td style="border:0px;padding: 2px;">
+																	<span t-esc="o.l10n_pe_edi_vehicle_id.name" />
+																</td>
+															</tr>
+															<tr style="border:0px;">
+																<td style="border:0px;padding: 2px;">
+																	N° de placa
+																</td>
+																<td style="border:0px;padding: 2px;">
+																	:
+																</td>
+																<td style="border:0px;padding: 2px;">
+																	<span t-esc="o.l10n_pe_edi_vehicle_id.license_plate" />
+																</td>
+															</tr>
+															<tr>
+																<td colspan="3" style="border:0px;padding: 2px;">
+																	<b>
+																		Comentarios:
+																	</b>
+																	<span t-esc="o.l10n_pe_edi_observation" />
+																</td>
+															</tr>
+														</t>
+														<t t-else="">
+															<tr style="border:0px;">
+																<td style="border:0px;padding: 2px;">
+																	Empresa del transporte
+																</td>
+																<td style="border:0px;padding: 2px;">
+																	:
+																</td>
+																<td style="border:0px;padding: 2px;">
+																	<span t-esc="o.l10n_pe_edi_operator_id.name" />
+																</td>
+															</tr>
+															<tr style="border:0px;">
+																<td style="border:0px;padding: 2px;">
+																	RUC
+																</td>
+																<td style="border:0px;padding: 2px;">
+																	:
+																</td>
+																<td style="border:0px;padding: 2px;">
+																	<span t-esc="o.l10n_pe_edi_operator_id.vat" />
+																</td>
+															</tr>
+															<tr style="border:0px;">
+																<td colspan="3" style="border:0px;padding: 2px;">
+																	<b>
+																		Comentarios:
+																	</b>
+																	<span t-esc="o.l10n_pe_edi_observation" />
+																</td>
+															</tr>
+														</t>
+													</tbody>
+												</table>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+								<table class="table" style="width:100%;font-size: 15px;border:0px;">
+									<tbody style="border:0px;">
+										<tr style="border:0px; background-color:#22629D;">
+											<td class="text-left pl-2" style="border:0px;color:white;font-size:15px;text-align: left;border-left:2px solid white;">
+												<b>
+													Motivo de transporte
+												</b>
+											</td>
+											<td class="text-left pl-2" style="border:0px;color:white;font-size:15px;text-align: left;border-left:2px solid white;">
+												<b>
+													Carga
+												</b>
+											</td>
+										</tr>
+									</tbody>
+									<tbody style="border:0px;">
+										<tr style="border:0px;">
+											<td class="text-left" style="border:0px;width:50%;">
+												<t t-if="o.l10n_pe_edi_reason_for_transfer != '13'">
+													<strong>
+														Motivo de traslado:
+													</strong>
+													<span t-field="o.l10n_pe_edi_reason_for_transfer" />
+												</t>
+												<t t-else="">
+													<strong>
+														Motivo de traslado:
+													</strong>
+													<span t-field="o.x_studio_motivo_trasnferencia" />
+												</t>
+											</td>
+											<td class="text-left" style="border:0px;width:50%;">
+												<strong style="margin-left: 15px;">
+													Peso bruto:
+												</strong>
+												<span t-esc="o.shipping_weight" style="overflow-wrap: break-word;" />
+												Kg
+												<br />
+											</td>
+										</tr>
+									</tbody>
+								</table>
+								<!-- <div class="container-fluid"> -->
+								<!-- <div class="row"> -->
+								<!-- <div style="width: 150px;"> -->
+								<!-- <img t-if="o.sunat_qr_code" t-att-src="image_data_uri(o.sunat_qr_code)" alt="Código QR" style="width: 140px; height: 140px;"/> -->
+								<!-- </div> -->
+								<!-- <div class="col-4"> -->
+								<table class="table" style="width:100%;font-size: 15px;border:0px;">
+									<tbody style="border:0px;">
+										<tr style="border:0px; background-color:#22629D;">
+											<td colspan="2" class="text-left pl-2" style="border:0px;color:white;font-size:13px;text-align: left;border-left:2px solid white;">
+												<b>
+													Más información
+												</b>
+											</td>
+										</tr>
+										<tr style="border:0px;">
+											<!-- QR -->
+											<td class="text-left" style="border:0px;width: 140px;">
+												<!-- <img t-if="o.sunat_qr_code" t-att-src="image_data_uri(o.sunat_qr_code)" alt="Código QR" style="width: 140px; height: 140px;"/> -->
+											</td>
+											<!-- Detalle de comprobantes -->
+											<td class="text-left" style="border:0px;">
+												<!-- <t t-foreach="o.pe_invoice_ids" t-as="move"> -->
+												<!-- <div style="border:0px; margin-bottom: 8px;"> -->
+												<!-- <strong>Tipo de Comprobante:</strong> -->
+												<!-- <span t-esc="move.l10n_latam_document_type_id.report_name"/> -->
+												<!-- <br/> -->
+												<!-- <strong>Número de Comprobante:</strong> -->
+												<!-- <span t-esc="move.l10n_latam_document_number"/> -->
+												<!-- <br/> -->
+												<!-- <strong>Fecha de Comprobante:</strong> -->
+												<!-- <span t-esc="move.invoice_date"/> -->
+												<!-- </div> -->
+												<!-- </t> -->
+											</td>
+										</tr>
+									</tbody>
+								</table>
+								<!-- </div> -->
+								<!-- </div> -->
+								<!-- </div> -->
+							</div>
+						</div>
+					</t>
+				</t>
+			</t>
+		</template>
+	</data>
+</odoo>
