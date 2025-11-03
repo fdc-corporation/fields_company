@@ -129,39 +129,39 @@
 					<table class="o_has_total_table table o_main_table table-borderless" style="font-size:12px !important;">
 						<!-- In case we want to repeat the header, remove "display: table-row-group" -->
 						<thead style="display: table-row-group">
-							<tr>
-								<th>
+                        <tr>
+                            <th>
 									N°
 								</th>
-								<th name="th_description" class="text-start">
-									Description
+                            <th name="th_description" class="text-start">
+									Descripción
 								</th>
-								<th t-if="doc.mostrar_img_producto" name="th_img" class="text-center">
+                            <th t-if="doc.mostrar_img_producto" name="th_img" class="text-center">
 									Img. Ref
 								</th>
-								<th name="th_quantity" class="text-end text-nowrap">
-									Quantity
+                            <th name="th_quantity" class="text-end text-nowrap">
+									Cantidad
 								</th>
-								<th name="th_priceunit" class="text-end text-nowrap">
-									Unit Price
+                            <th name="th_priceunit" class="text-end text-nowrap">
+									Precio unitario
 								</th>
-								<th name="th_discount" t-if="doc.mostrar_descuento" class="text-end">
-									<span>
-										Disc.%
+                            <th name="th_discount" t-if="doc.mostrar_descuento" class="text-end">
+                                <span>
+										Desc.%
 									</span>
-								</th>
-								<th name="th_taxes" t-if="display_taxes" class="text-end">
-									<span>
-										Taxes
+                            </th>
+                            <th name="th_taxes" t-if="display_taxes" class="text-end">
+                                <span>
+										Impuestos
 									</span>
-								</th>
-								<th name="th_subtotal" class="text-end">
-									<span>
-										Amount
+                            </th>
+                            <th name="th_subtotal" class="text-end">
+                                <span>
+										Sub total
 									</span>
-								</th>
-							</tr>
-						</thead>
+                            </th>
+                        </tr>
+                    </thead>
 						<tbody class="sale_tbody">
 							<t t-set="current_section" t-value="None" />
 							<t t-set="current_subsection" t-value="None" />
@@ -234,9 +234,17 @@
 											<span t-out="index" />
 										</td>
 										<td name="td_product_name" t-att-class="padding_class">
-											<span t-field="line.name">
+											<t t-if="doc.mostrar_codigo">
+												<span t-field="line.name">
 												Bacon Burger
 											</span>
+											</t>
+											<t t-else="">
+												<t t-set="description" t-value="line.name"/>
+												<t t-set="new_description" t-value="description[description.rfind(']') + 1:] if description.rfind(']') != -1 else description"/>
+												<t t-set="formatted_description" t-value="new_description.replace('\n', '&lt;br/&gt;') if '\n' in new_description else new_description"/>
+												<span t-raw="formatted_description"/>
+											</t>
 										</td>
 										<t t-if="doc.mostrar_img_producto">
 											<td name="td_img">
