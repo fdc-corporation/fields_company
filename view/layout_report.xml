@@ -5,7 +5,7 @@
 			<div t-attf-class="header o_company_#{company.id}_layout {{report_type != 'pdf' and 'h-0'}}">
 				<div class="row" style="padding:35px 0px 0px 0px;">
 					<div class="col-4 mb4 mt4">
-						<img t-if="company.logo" t-att-src="image_data_uri(company.logo)" style="max-height: 180px;margin:-20px 0px 0px 0px;" alt="Logo" />
+						<img t-if="company.logo" t-att-src="image_data_uri(company.logo)" style="max-height: 120px;margin:-20px 0px 0px 0px;" alt="Logo" />
 					</div>
 					<div class="col-4 mb4" style="text-align:center;">
 						<p style="margin-bottom:-1px; font-size:13px;">
