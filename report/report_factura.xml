@@ -540,22 +540,22 @@
 										<table class="table table-sm table-striped" style="font-size: 10px;text-align:center;border:0px;">
 											<thead style="border:0px;" class="bg-secondary text-white text-center">
 												<tr style="border:0px;">
-													<th style="border:0px;">
-														Entidad
-													</th>
-													<th style="border:0px;">
-														Moneda
-													</th>
-													<th style="border:0px;">
-														Tipo de Cuenta
-													</th>
-													<th style="border:0px;">
-														Numero
-													</th>
-													<th style="border:0px;">
-														CCI
-													</th>
-												</tr>
+                                                    <th style="border:0px;text-align:center;">
+                                                                Entidad
+                                                            </th>
+                                                    <th style="border:0px;text-align:center;">
+                                                                Moneda
+                                                            </th>
+                                                    <th style="border:0px;text-align:center;">
+                                                                Tipo de Cuenta
+                                                            </th>
+                                                    <th style="border:0px;text-align:center;">
+                                                                Numero
+                                                            </th>
+                                                    <th style="border:0px;text-align:center;">
+                                                                CCI
+                                                            </th>
+                                                </tr>
 											</thead>
 											<tbody style="border:0px;">
 												<tr style="border:0px;">
@@ -715,173 +715,178 @@
 									</div>
 								</div>
 								<div class="row">
-									<div t-if="spot or extra_edi_vals or o.tiene_retencion" id="l10n_pe_spot" class="">
-										<table class="table" style="border:0px;">
-											<tr clas="row" style="border:0px;">
-												<table class="table" style="border:1px solid black;padding-left:15px;font-size:12px;">
-													<t t-if="o.tiene_retencion">
-														<tbody style="border:1px solid black;padding-left:25px;">
-															<tr class="row" style="border:0px;padding-left:25px;">
-																<td class="col-12" style="border:0px;padding:0px;width:100% !important;padding-top:9px;">
-																	<strong>
+                            <div t-if="spot or extra_edi_vals or o.tiene_retencion" id="l10n_pe_spot" class="">
+                                <table class="table" style="border:0px;">
+                                    <tr clas="row" style="border:0px;">
+                                        <table class="table" style="border:1px solid black;padding-left:15px;font-size:12px;">
+                                            <t t-if="o.tiene_retencion">
+                                                <tbody style="border:1px solid black;padding-left:20px;">
+                                                    <tr class="row" style="border:0px;padding-left:20px;">
+                                                        <td class="col-12" style="border:0px;padding:0px;width:100% !important;padding-top:9px;">
+                                                            <strong>
 																		Información de la retención
 																	</strong>
-																</td>
-															</tr>
-															<tr class="row" style="border:0px;padding-left:25px;padding-bottom:9px;">
-																<td class="col-2" style="border:0px;padding:0px;">
+                                                        </td>
+                                                    </tr>
+                                                    <tr class="row" style="border:0px;padding-left:25px;padding-bottom:9px;">
+                                                        <td class="col-2" style="border:0px;padding:0px;">
 																	Base imponible de la Retención:
 																</td>
-																<td class="col-2" style="border:0px;padding:0px;">
+                                                        <td class="col-2" style="border:0px;padding:0px;">
 																	S/.
-																	<t t-esc="o.amount_residual_signed" />
-																</td>
-																<td class="col-2" style="border:0px;padding:0px;">
+																	
+                                                            <t t-esc="o.amount_residual_signed"/>
+                                                        </td>
+                                                        <td class="col-2" style="border:0px;padding:0px;">
 																	% de retención:
 																</td>
-																<td class="col-2" style="border:0px;padding:0px;">
-																	<t t-esc="o.company_id.procentaje_retencion" />
+                                                        <td class="col-2" style="border:0px;padding:0px;">
+                                                            <t t-esc="o.company_id.procentaje_retencion"/>
 																	%
-																</td>
-																<td class="col-2" style="border:0px;padding:0px;">
+																
+                                                        </td>
+                                                        <td class="col-2" style="border:0px;padding:0px;">
 																	Monto de la retención:
 																</td>
-																<td class="col-2" style="border:0px;padding:0px;">
+                                                        <td class="col-2" style="border:0px;padding:0px;">
 																	S/.
-																	<t t-esc="o.monto_retencion" />
-																</td>
-															</tr>
-														</tbody>
-													</t>
-													<t t-if="spot">
-														<tbody style="border:1px solid black;padding-left:25px;">
-															<tr class="row" style="border:0px;padding-left:25px;">
-																<td class="col-12" colspan="6" style="border:0px;padding:0px;width:100% !important;padding-top:9px;">
-																	<strong>
+																	
+                                                            <t t-esc="o.monto_retencion"/>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </t>
+                                            <t t-if="spot">
+                                                <tbody style="border:1px solid black;padding-left:20px;">
+                                                    <tr class="row" style="border:0px;padding-left:20px;">
+                                                        <td class="col-12" colspan="6" style="border:0px;padding:0px;width:100% !important;padding-top:9px;">
+                                                            <strong>
 																		Operación sujeta al Sistema de Pago de Obligaciónes Tributarias - SPOT
 																	</strong>
-																</td>
-															</tr>
-															<tr class="row" style="border:0px;padding-left:25px;padding-bottom:9px;">
-																<td class="col-2" style="border:0px;padding:0px;">
+                                                        </td>
+                                                    </tr>
+                                                    <tr class="row" style="border:0px;padding-left:25px;padding-bottom:9px;">
+                                                        <td class="col-2" style="border:0px;padding:0px;">
 																	Nro. Cta. Banco de la Nación
 																</td>
-																<td class="col-2" style="border:0px;padding:0px;">
-																	<span t-out="spot['payee_financial_account']" />
-																</td>
-																<td class="col-2" style="border:0px;padding:0px;">
+                                                        <td class="col-2" style="border:0px;padding:0px;">
+                                                            <span t-out="spot['payee_financial_account']"/>
+                                                        </td>
+                                                        <td class="col-2" style="border:0px;padding:0px;">
 																	% de detracción:
 																</td>
-																<td class="col-2" style="border:0px;padding:0px;">
-																	<t t-out="spot['payment_percent']" />
+                                                        <td class="col-2" style="border:0px;padding:0px;">
+                                                            <t t-out="spot['payment_percent']"/>
 																	%
-																</td>
-																<td class="col-2" style="border:0px;padding:0px;">
+																
+                                                        </td>
+                                                        <td class="col-2" style="border:0px;padding:0px;">
 																	Monto detracción:
 																</td>
-																<td class="col-2" style="border:0px;padding:0px;">
-																	<span t-out="spot['amount']" t-options="{'widget': 'monetary', 'display_currency': spot['currency']}" />
-																</td>
-															</tr>
-														</tbody>
-													</t>
-												</table>
-											</tr>
-										</table>
-									</div>
-								</div>
-								<div style="margin-top:10px;">
-									<div style="width:100%;border:1px solid black; padding:5px;">
-										<t t-set="payment_term_details" t-value="o.payment_term_details" />
-										<table class="table" style="margin:0px;border:1px solid black;padding:10px;font-size:12px;width:100% !important;">
-											<tbody style="border:1px solid black;padding-left:25px;width:100% !important;">
-												<tr class="row" style="border:0px;padding-left:25px;width:100% !important;">
-													<td class="col-12" colspan="3" style="border:0px;padding:0px;width:200px !important;padding-bottom: 3px;padding-top: 8px;">
-														<strong>
+                                                        <td class="col-2" style="border:0px;padding:0px;">
+                                                            <span t-out="spot['amount']" t-options="{'widget': 'monetary', 'display_currency': spot['currency']}"/>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </t>
+                                        </table>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                        <div style="margin-top:10px;">
+                            <div style="width:100%;border:1px solid black; padding:5px;">
+                                <t t-set="payment_term_details" t-value="o.payment_term_details"/>
+                                <table class="table" style="margin:0px;border:1px solid black;padding:10px;font-size:12px;width:100% !important;">
+                                    <tbody style="border:1px solid black;padding-left:18px;width:100% !important;">
+                                        <tr class="row" style="border:0px;padding-left:18px;width:100% !important;">
+                                            <td class="col-12" colspan="3" style="border:0px;padding:0px;width:200px !important;padding-bottom: 3px;padding-top: 8px;">
+                                                <strong>
 															Información del crédito
 														</strong>
-													</td>
-												</tr>
-												<!-- <tr class="row" style="border:0px;padding-left:15px;padding-bottom: 3px;"> -->
-												<!-- <td class="col-3" style="border:0px;padding:0px;width:190px !important;">Monto neto pendiente de pago:</td> -->
-												<!-- <td class="col-1" style="border:0px;padding:0px;">:</td> -->
-												<!-- <td class="col-8" style="border:0px;padding:0px;width:190px !important;"> -->
-												<!-- <t t-set="monto_neto_pagar_base" t-value="" -->
-												<!-- <t t-esc="o.currency_id.symbol"/> -->
-												<!-- <t t-if="o.currency_id.id == o.company_id.currency_id.id"> -->
-												<!-- <span class="text-nowrap" t-esc="'%.2f'%(monto_neto_pagar)"/> -->
-												<!-- </t> -->
-												<!-- <t t-else=""> -->
-												<!-- <span class="text-nowrap" t-esc="'%.2f'%(monto_neto_pagar_base)"/> -->
-												<!-- </t> -->
-												<!-- </td> -->
-												<!-- </tr> -->
-												<tr class="row" style="border:0px;padding-left:25px;padding-bottom: 8px;">
-													<td class="col-3" style="border:0px;padding:0px;width:190px !important;">
+                                            </td>
+                                        </tr>
+                                        <!-- <tr class="row" style="border:0px;padding-left:15px;padding-bottom: 3px;"> -->
+                                        <!-- <td class="col-3" style="border:0px;padding:0px;width:190px !important;">Monto neto pendiente de pago:</td> -->
+                                        <!-- <td class="col-1" style="border:0px;padding:0px;">:</td> -->
+                                        <!-- <td class="col-8" style="border:0px;padding:0px;width:190px !important;"> -->
+                                        <!-- <t t-set="monto_neto_pagar_base" t-value="" -->
+                                        <!-- <t t-esc="o.currency_id.symbol"/> -->
+                                        <!-- <t t-if="o.currency_id.id == o.company_id.currency_id.id"> -->
+                                        <!-- <span class="text-nowrap" t-esc="'%.2f'%(monto_neto_pagar)"/> -->
+                                        <!-- </t> -->
+                                        <!-- <t t-else=""> -->
+                                        <!-- <span class="text-nowrap" t-esc="'%.2f'%(monto_neto_pagar_base)"/> -->
+                                        <!-- </t> -->
+                                        <!-- </td> -->
+                                        <!-- </tr> -->
+                                        <tr class="row" style="border:0px;padding-left:18px;padding-bottom: 8px;">
+                                            <td class="col-3" style="border:0px;padding:0px;width:190px !important;">
 														Total de Cuotas:
 													</td>
-													<td class="col-1" style="border:0px;padding:0px;">
+                                            <td class="col-1" style="border:0px;padding:0px;">
 														:
 													</td>
-													<td class="col-8" style="border:0px;padding:0px;width:190px !important;">
-														<t t-if="payment_term_details">
-															<t t-esc="len(payment_term_details) " />
-														</t>
-														<t t-else="">
+                                            <td class="col-8" style="border:0px;padding:0px;width:190px !important;">
+                                                <t t-if="payment_term_details">
+                                                    <t t-esc="len(payment_term_details) "/></t>
+                                                <t t-else="">
 															0
 														</t>
-													</td>
-												</tr>
-											</tbody>
-										</table>
-										<!-- <span id="payment_terms_note_id" t-if="o.invoice_payment_term_id.note" t-field="o.invoice_payment_term_id.note" name="payment_term">Pago en un plazo de 30 días naturales</span> -->
-										<!-- <br/> -->
-										<t t-set="payment_term_details" t-value="o.payment_term_details" />
-										<div t-if="payment_term_details" class="m-1">
-											<span id="payment_terms_note_id" t-if="o.invoice_payment_term_id.note" t-field="o.invoice_payment_term_id.note" name="payment_term">
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <!-- <span id="payment_terms_note_id" t-if="o.invoice_payment_term_id.note" t-field="o.invoice_payment_term_id.note" name="payment_term">Pago en un plazo de 30 días naturales</span> -->
+                                <!-- <br/> -->
+                                <t t-set="payment_term_details" t-value="o.payment_term_details"/>
+                                <div t-if="payment_term_details" class="m-1">
+                                    <span id="payment_terms_note_id" t-if="o.invoice_payment_term_id.note" t-field="o.invoice_payment_term_id.note" name="payment_term">
 												Pago en un plazo de 30 días naturales
 											</span>
-											<br />
-											<t t-if="o.invoice_payment_term_id.display_on_invoice and payment_term_details">
-												<div t-if="o.show_payment_term_details" id="total_payment_term_details_table" class="row">
-													<div t-attf-class="#{'col-10' if report_type != 'html' else 'col-sm-10 col-md-9'}">
-														<t t-if="o._is_eligible_for_early_payment_discount(o.currency_id,o.invoice_date)">
-															<td>
-																<span t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.currency_id}" t-out="o.invoice_payment_term_id._get_amount_due_after_discount(o.amount_total, o.amount_tax)">
+                                    <br/>
+                                    <t t-if="o.invoice_payment_term_id.display_on_invoice and payment_term_details">
+                                        <div t-if="o.show_payment_term_details" id="total_payment_term_details_table" class="row">
+                                            <div t-attf-class="#{'col-10' if report_type != 'html' else 'col-sm-10 col-md-9'}">
+                                                <t t-if="o._is_eligible_for_early_payment_discount(o.currency_id,o.invoice_date)">
+                                                    <td>
+                                                        <span t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.currency_id}" t-out="o.invoice_payment_term_id._get_amount_due_after_discount(o.amount_total, o.amount_tax)">
 																	30.00
 																</span>
 																debido si se paga antes de
-																<span t-out="o.invoice_payment_term_id._get_last_discount_date_formatted(o.invoice_date)">
+																
+                                                        <span t-out="o.invoice_payment_term_id._get_last_discount_date_formatted(o.invoice_date)">
 																	01-01-2024
 																</span>
-															</td>
-														</t>
-														<t t-if="len(payment_term_details) &gt; 1" t-foreach="payment_term_details" t-as="term">
-															<div>
-																<span t-out="term_index + 1">
+                                                    </td>
+                                                </t>
+                                                <t t-if="len(payment_term_details) &gt; 1" t-foreach="payment_term_details" t-as="term">
+                                                    <div>
+                                                        <span t-out="term_index + 1">
 																	1
 																</span>
 																- Plazo de
-																<t t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.currency_id}" t-out="term.get('amount')" class="text-end">
+																
+                                                        <t t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.currency_id}" t-out="term.get('amount')" class="text-end">
 																	31.05
 																</t>
-																<span>
+                                                        <span>
 																	hasta
 																</span>
-																<t t-out="term.get('date')" class="text-start">
+                                                        <t t-out="term.get('date')" class="text-start">
 																	01-01-2024
 																</t>
-															</div>
-														</t>
-													</div>
-												</div>
-												<p t-if="spot.get('has_installments')">
+                                                    </div>
+                                                </t>
+                                            </div>
+                                        </div>
+                                        <p t-if="spot.get('has_installments')">
 													La detracción debe pagarse en la primera cuota.
 												</p>
-											</t>
-										</div>
-									</div>
-								</div>
+                                    </t>
+                                </div>
+                            </div>
+                        </div>
 							</div>
 						</div>
 					</t>
