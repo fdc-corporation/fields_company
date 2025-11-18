@@ -22,7 +22,7 @@
         # REPORTS
         "report/report_inheriit_sale.xml",
         "report/report_guias.xml",
-        # "report/report_factura.xml",
+        "report/report_factura.xml",
     ],
     'auto_install': False,
     'application': False,
