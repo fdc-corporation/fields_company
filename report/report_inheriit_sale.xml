@@ -248,9 +248,14 @@
                                         <span t-out="index"/>
                                     </td>
                                     <td name="td_product_name" t-att-class="padding_class">
-                                        <a t-att-href="line.product_id.website_absolute_url"><span t-field="line.name">
+										<t t-if="doc.mostrar_url">
+											<a t-att-href="line.product_id.website_absolute_url"><span t-field="line.name">
 												Bacon Burger
-											</span></a>
+											</span></a>									
+										</t>
+                                        <t t-else="">
+											<span t-field="line.name"></span>
+										</t>
                                     </td>
                                     <t t-if="doc.mostrar_img_producto">
                                         <td name="td_img">

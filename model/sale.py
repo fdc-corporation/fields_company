@@ -25,7 +25,11 @@ class SaleOrder(models.Model):
         default=False,
         help='Indica si se debe mostrar la imagen del producto en las líneas de la cotización.'
     )
-
+    mostrar_url = fields.Boolean(
+        string="Mostrar URL del producto",
+        defaullt=False,
+        help="Indica si se debe mostrar la URL del producto en las líneas de la cotización."
+    )
 
     @api.model
     def create(self, vals):
