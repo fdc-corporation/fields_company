@@ -11,6 +11,7 @@
                 <field name="mostrar_descuento"></field>
                 <field name="mostrar_codigo"></field>
                 <field name="mostrar_img_producto"></field>
+                <field name="mostrar_url"></field>
             </xpath>
             <xpath expr="//list/field[@name='name']" position="after">
                 <field name="img_ref" optional="show"  widget="image"></field>
