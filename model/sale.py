@@ -1,6 +1,6 @@
 from odoo import models, fields, api, Command  
-from odoo.exceptions import UserError
-
+from odoo.exceptions import UserError, AccessError
+from itertools import groupby
 
 
 class SaleOrder(models.Model):
