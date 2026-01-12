@@ -248,14 +248,26 @@
                                         <span t-out="index"/>
                                     </td>
                                     <td name="td_product_name" t-att-class="padding_class">
-										<t t-if="doc.mostrar_url">
-											<a t-att-href="line.product_id.website_absolute_url"><span t-field="line.name">
-												Bacon Burger
-											</span></a>									
-										</t>
+                                        <t t-if="doc.mostrar_url">
+                                            <a t-att-href="line.product_id.website_absolute_url">
+                                                <t t-if="not doc.mostrar_descuento">
+                                                <t t-set="descripcion" t-value="line.name.split(']', 1)[1].strip() if ']' in line.name else line.name"/>
+                                                <span t-esc="descripcion"/>
+                                            </t>
+                                            <t t-else="">
+                                                <span t-field="line.name"/>
+                                            </t>
+                                            </a>
+                                        </t>
                                         <t t-else="">
-											<span t-field="line.name"></span>
-										</t>
+                                            <t t-if="not doc.mostrar_descuento">
+                                                <t t-set="descripcion" t-value="line.name.split(']', 1)[1].strip() if ']' in line.name else line.name"/>
+                                                <span t-esc="descripcion"/>
+                                            </t>
+                                            <t t-else="">
+                                                <span t-field="line.name"/>
+                                            </t>
+                                        </t>
                                     </td>
                                     <t t-if="doc.mostrar_img_producto">
                                         <td name="td_img">
