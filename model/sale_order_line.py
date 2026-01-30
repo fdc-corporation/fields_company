@@ -21,10 +21,9 @@ class SaleOrderLine(models.Model):
             group = self.env.ref('pmant.group_pmant_planner', raise_if_not_found=False)
             if group:
                 user = self.env['res.users'].search([
-                    ('groups_id', 'in', group.id),
+                    ('group_ids', 'in', group.id),
                     ('share', '=', False),
-                    ('active', '=', True),
-                ], limit=1)
+                ], limit=1) if group else False
             else:
                 user = self.env['res.users']
 
