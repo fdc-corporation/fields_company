@@ -8,7 +8,7 @@
     'license': 'LGPL-3',
     'category': 'Uncategorized',
     'depends': [
-        'base', 'contacts', 'mail', 'sale', 'stock',"web", "account_followup", "account", "crm"
+        "pmant", 'base', 'contacts', 'mail', 'sale', 'stock', "web", "account_followup", "account", "crm"
     ],
     'data': [
         # SECURITY
