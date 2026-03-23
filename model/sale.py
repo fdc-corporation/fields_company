@@ -32,7 +32,8 @@ class SaleOrder(models.Model):
         defaullt=False,
         help="Indica si se debe mostrar la URL del producto en las líneas de la cotización."
     )
-
+    partner_id = fields.Many2one(domain="[('parent_id', '==', False)]")
+    partner_shipping_id = fields.Many2one(domain="[('parent_id', '==', partner_id)]")
     @api.model
     def create(self, vals):
         res = super().create(vals)

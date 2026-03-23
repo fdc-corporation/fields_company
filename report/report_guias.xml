@@ -1,19 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 	<data>
-        <record id="paperformat_a4_guias" model="report.paperformat">
-            <field name="name">A4 - Guías</field>
-            <field name="default" eval="False"/>
-            <field name="format">A4</field>
-            <field name="orientation">Portrait</field>
-            <field name="margin_top">10</field>
-            <field name="margin_bottom">20</field>
-            <field name="margin_left">7</field>
-            <field name="margin_right">7</field>
-            <field name="disable_shrinking" eval="True"/>
-            <field name="dpi">110</field>
-        </record>
-
+		<record id="paperformat_a4_guias" model="report.paperformat">
+			<field name="name">A4 - Guías</field>
+			<field name="default" eval="False" />
+			<field name="format">A4</field>
+			<field name="orientation">Portrait</field>
+			<field name="margin_top">10</field>
+			<field name="margin_bottom">20</field>
+			<field name="margin_left">7</field>
+			<field name="margin_right">7</field>
+			<field name="disable_shrinking" eval="True" />
+			<field name="dpi">110</field>
+		</record>
 		<record id="action_reporte_guias" model="ir.actions.report">
 			<field name="name">Guia Electronica</field>
 			<field name="model">stock.picking</field>
@@ -22,62 +21,63 @@
 			<field name="report_file">fields_company.report_guias</field>
 			<field name="binding_model_id" ref="stock.model_stock_picking" />
 			<field name="binding_type">report</field>
-            <field name="print_report_name">'Guia - %s' % (object.partner_id.name)</field>
-            <field name="paperformat_id" ref="fields_company.paperformat_a4_guias"/>
+			<field name="print_report_name">'Guia - %s' % (object.partner_id.name)</field>
+			<field name="paperformat_id" ref="fields_company.paperformat_a4_guias" />
 		</record>
-
-
 		<template id="report_guias">
 			<t t-name="web.basic_layout">
 				<t t-foreach="docs" t-as="doc">
 					<t t-call="web.html_container">
-                        <t t-if="not o" t-set="o" t-value="doc"/>
+						<t t-if="not o" t-set="o" t-value="doc" />
+						<t t-set="o" t-value="o.with_context(lang=lang)" />
 						<div class="article" t-att-data-oe-model="o and o._name" t-att-data-oe-id="o and o.id" t-att-data-oe-lang="o and o.env.context.get('lang')">
 							<!--
 							Header
 							<div class="header o_company_#{company.id}_layout factura" t-att-style="report_header_style">
 							-->
-							<div class="header " style="font-family: Monaco; font-size: 16px;">
-								<div class="row">
-									<div class="col-4 col-xs-4 ">
-										<img t-if="o.company_id.logo" t-att-src="image_data_uri(o.company_id.logo)" style="width:220px;top: 30%;" alt="Logo" />
-									</div>
-									<div class="col-4 empresa text-center" name="company_address">
-										<strong style="font-size:14px;">
-											<t t-esc="o.company_id.name" />
-										</strong>
-										<br />
-										<span style="font-size:13px;" t-esc="o.company_id.street" />
-										<br />
-										<span style="font-size:13px;" t-esc="o.company_id.partner_id.l10n_pe_district.name" />
-										-
-										<span style="font-size:13px;" t-esc="o.company_id.state_id.name" />
-										-
-										<span style="font-size:13px;" t-esc="o.company_id.city" />
-										<br />
-										<span style="font-size:13px;" t-if="o.company_id.phone">
-											Telf.:
-											<t t-esc="o.company_id.phone" />
-										</span>
-									</div>
-									<div class="col-4 text-right">
-										<div class="text-center" style="margin: 0px auto;padding:15px 20px;border-radius:10px;border: 1px solid #ddd !important;font-size: 16px;width: max-content;">
-											RUC:
-											<t t-esc="o.company_id.vat" />
+							<!-- Body -->
+							<div class="" style="font-family: Monaco; font-size: 13px;">
+								<div class="" style="font-family: Monaco; font-size: 16px;">
+									<div class="row">
+										<div class="col-4 col-xs-4 ">
+											<img t-if="o.company_id.logo" t-att-src="image_data_uri(o.company_id.logo)" style="width:220px;top: 30%;" alt="Logo" />
+										</div>
+										<div class="col-4 empresa text-center" name="company_address">
+											<strong style="font-size:14px;">
+												<t t-esc="o.company_id.name" />
+											</strong>
 											<br />
-											<span style="font-size:13px;">
-												GUÍA DE REMISIÓN ELECTRÓNICA
-												<br />
+											<span style="font-size:13px;" t-esc="o.company_id.street" />
+											<br />
+											<span style="font-size:13px;" t-esc="o.company_id.partner_id.l10n_pe_district.name" />
+											-
+											<span style="font-size:13px;" t-esc="o.company_id.state_id.name" />
+											-
+											<span style="font-size:13px;" t-esc="o.company_id.city" />
+											<br />
+											<span style="font-size:13px;" t-if="o.company_id.phone">
+												Telf.:
+												<t t-esc="o.company_id.phone" />
 											</span>
-											<t t-if="o.l10n_latam_document_number" t-esc="o.l10n_latam_document_number" />
-											<t t-else="" t-esc="o.name" />
+										</div>
+										<div class="col-4 text-right">
+											<div class="text-center" style="margin: 0px auto;padding:15px 20px;border-radius:10px;border: 1px solid #ddd !important;font-size: 16px;width: max-content;">
+												RUC:
+												<t t-esc="o.company_id.vat" />
+												<br />
+												<span style="font-size:13px;">
+													GUÍA DE REMISIÓN ELECTRÓNICA
+													<br />
+												</span>
+												<t t-if="o.l10n_latam_document_number" t-esc="o.l10n_latam_document_number" />
+												<t t-else="" t-esc="o.name" />
+											</div>
 										</div>
 									</div>
 								</div>
-							</div>
-							<!-- Body -->
-							<div class="" style="font-family: Monaco; font-size: 13px;">
-								<t t-set="o" t-value="o.with_context(lang=lang)" />
+								<br>
+									<br />
+								</br>
 								<table class="table" style="width:100%;font-size: 15px;border:0px;margin-top:-30px;">
 									<thead style="border:0px;">
 										<tr style="border:0px; background-color:#22629D;">
@@ -97,8 +97,6 @@
 										<tr style="border:0px;">
 											<t t-if="o.picking_type_id.name =='Traslados internos'">
 												<td style="border:0px;width: 50%;font-size:15px;">
-													<br />
-													<br />
 													<t t-esc="o.location_dest_id.warehouse_id.partner_id.street or ''" />
 													,
 													<t t-esc="o.location_dest_id.warehouse_id.partner_id.l10n_pe_district.name or ''" />
@@ -116,8 +114,6 @@
 											</t>
 											<t t-else="">
 												<td style="border:0px;width: 50%;font-size:15px;">
-													<br />
-													<br />
 													<t t-if="o.picking_type_id.name =='Órdenes de PdV' or o.picking_type_id.name =='Órdenes de entrega' ">
 														<t t-esc="o.partner_id.street or ''" />
 														<t t-esc="o.partner_id.l10n_pe_district.name or ''" />
@@ -146,8 +142,6 @@
 												</td>
 											</t>
 											<td style="border:0px;font-size:15px;">
-												<br />
-												<br />
 												<t t-if="o.picking_type_id.name =='Órdenes de PdV' or o.picking_type_id.name =='Órdenes de entrega'">
 													<t t-esc="o.picking_type_id.warehouse_id.partner_id.street or ''" />
 													,
@@ -257,7 +251,9 @@
 										<t t-foreach="o.move_ids" t-as="product">
 											<tr style="border:0px;">
 												<td style="border:0px;">
-													<span t-esc="product.description_picking" />
+													<span t-esc="product.product_id.name" />
+													<br />
+													<span t-field="product.description_picking" />
 												</td>
 												<td style="border:0px;">
 													<span t-esc="product.quantity" />
@@ -448,12 +444,11 @@
 													</strong>
 													<span t-field="o.l10n_pe_edi_reason_for_transfer" />
 												</t>
-												<t t-else="">
-													<strong>
-														Motivo de traslado:
-													</strong>
-													<span t-field="o.x_studio_motivo_trasnferencia" />
-												</t>
+												<br />
+												<strong>
+													OC:
+												</strong>
+												<span t-esc="doc.oc_id.oc" />
 											</td>
 											<td class="text-left" style="border:0px;width:50%;">
 												<strong style="margin-left: 15px;">

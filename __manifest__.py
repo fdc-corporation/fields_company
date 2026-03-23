@@ -8,7 +8,7 @@
     'license': 'LGPL-3',
     'category': 'Uncategorized',
     'depends': [
-        'base', 'contacts', 'mail', 'sale', 'stock',"web"
+        'base', 'contacts', 'mail', 'sale', 'stock',"web", "account_followup", "account", "crm"
     ],
     'data': [
         # SECURITY
@@ -19,6 +19,7 @@
         "view/layout_report.xml",
         "view/view_company.xml",
         "view/view_crm_lead.xml",
+        "view/view_form_res_partner.xml",
         # REPORTS
         "report/report_inheriit_sale.xml",
         "report/report_guias.xml",
