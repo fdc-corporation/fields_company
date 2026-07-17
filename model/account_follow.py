@@ -51,66 +51,52 @@ class AccountFollowupReport(models.AbstractModel):
 
     @api.model
     def _send_email(self, options):
-        """
-        ENVÍO REAL → SOLO CONTADORES
-        """
         partner = self.env['res.partner'].browse(options.get('partner_id'))
         followup_line = options.get('followup_line', partner.followup_line_id)
-
+    
         contactos_factura = self.env['res.partner'].search([
             ('parent_id', '=', partner.id),
             ('is_contador', '=', True),
             ('email', '!=', False)
         ])
-
+    
         if not contactos_factura:
             raise UserError(_(
-                "El cliente '%s' no tiene contactos contadores con email.",
-                partner.name
-            ))
-
-        # 🔥 CORREOS REALES
-        emails = [c.email.strip() for c in contactos_factura if c.email]
-        email_to = ",".join(emails)
-
-        _logger.info(f"DESTINATARIOS: {email_to}")
-
+                "El cliente '%s' no tiene contactos contadores con email."
+            ) % partner.name)
+    
         self = self.with_context(lang=partner.lang or self.env.user.lang)
-
+    
         body_html = self.with_context(mail=True).get_followup_report_html(options)
         attachment_ids = options.get('attachment_ids')
         author_id = options.get(
             'author_id',
             partner._get_followup_responsible().partner_id.id
         )
-
-        # 🔥 ENVÍO CONTROLADO
+    
         partner.with_context(
             mail_post_autofollow=False,
             lang=partner.lang or self.env.user.lang
         ).message_post(
-            partner_ids=[],  # ❌ evitar followers
-            email_to=email_to,  # ✅ destino real
+            partner_ids=contactos_factura.ids,   # <- aquí el cambio importante
             author_id=author_id,
             email_from=self._get_email_from(options),
             body=body_html,
             subject=self._get_email_subject(options),
             reply_to=self._get_email_reply_to(options),
-            model_description=_('payment reminder'),
+            message_type='comment',
+            subtype_id=self.env['ir.model.data']._xmlid_to_res_id('mail.mt_note'),
             notify_author=False,
             email_layout_xmlid='mail.mail_notification_light',
             attachment_ids=attachment_ids,
-            subtype_id=self.env['ir.model.data']._xmlid_to_res_id('mail.mt_note'),
         )
-
-        # (Opcional) suscribir contadores
+    
         partner.message_subscribe(contactos_factura.ids)
-
+    
         if followup_line and followup_line.additional_follower_ids:
             partner.message_subscribe(
                 followup_line.additional_follower_ids.partner_id.ids
             )
-
 
 # =========================================================
 # WIZARD MANUAL (SEND & PRINT)
