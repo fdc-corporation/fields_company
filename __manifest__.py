@@ -14,6 +14,7 @@
         # SECURITY
         'security/security.xml',
         "security/ir_rule.xml",
+        "security/ir.model.access.csv",
         # VIEWS
         "view/view_sale_order.xml",
         "view/layout_report.xml",
@@ -24,6 +25,7 @@
         "report/report_inheriit_sale.xml",
         "report/report_guias.xml",
         "report/report_factura.xml",
+        "view/view_product.xml",
     ],
     'auto_install': False,
     'application': False,

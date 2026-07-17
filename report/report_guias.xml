@@ -110,6 +110,11 @@
 														Fecha de entrega:
 													</strong>
 													<span t-esc="o.scheduled_date.strftime('%Y-%m-%d')" />
+													<br />
+													<strong>
+														Fecha de emisión:
+													</strong>
+													<span t-esc="o.date_done.strftime('%Y-%m-%d') if o.date_done else ''" />
 												</td>
 											</t>
 											<t t-else="">
@@ -139,6 +144,11 @@
 														Fecha de entrega:
 													</strong>
 													<span t-esc="o.scheduled_date.strftime('%Y-%m-%d')" />
+													<br />
+													<strong>
+														Fecha de emisión:
+													</strong>
+													<span t-esc="o.date_done.strftime('%Y-%m-%d') if o.date_done else ''" />
 												</td>
 											</t>
 											<td style="border:0px;font-size:15px;">
@@ -479,22 +489,16 @@
 										<tr style="border:0px;">
 											<!-- QR -->
 											<td class="text-left" style="border:0px;width: 140px;">
-												<!-- <img t-if="o.sunat_qr_code" t-att-src="image_data_uri(o.sunat_qr_code)" alt="Código QR" style="width: 140px; height: 140px;"/> -->
+												<t t-set="qr_url" t-value="o._l10n_pe_edi_get_qr()" />
+												<div t-if="qr_url" class="barcode col-3">
+													<img alt="Código de barras" t-att-src="'/report/barcode/?barcode_type=QR&amp;value=%s&amp;width=180&amp;height=180&amp;quiet=0' % quote_plus(qr_url)" />
+												</div>
 											</td>
 											<!-- Detalle de comprobantes -->
 											<td class="text-left" style="border:0px;">
-												<!-- <t t-foreach="o.pe_invoice_ids" t-as="move"> -->
-												<!-- <div style="border:0px; margin-bottom: 8px;"> -->
-												<!-- <strong>Tipo de Comprobante:</strong> -->
-												<!-- <span t-esc="move.l10n_latam_document_type_id.report_name"/> -->
-												<!-- <br/> -->
-												<!-- <strong>Número de Comprobante:</strong> -->
-												<!-- <span t-esc="move.l10n_latam_document_number"/> -->
-												<!-- <br/> -->
-												<!-- <strong>Fecha de Comprobante:</strong> -->
-												<!-- <span t-esc="move.invoice_date"/> -->
-												<!-- </div> -->
-												<!-- </t> -->
+												<div t-if="o.qr_guia" class="barcode col-3">
+													<img t-if="o.qr_guia" t-att-src="image_data_uri(o.qr_guia)" style="width:100px; height:100px;" alt="QR" />
+												</div>
 											</td>
 										</tr>
 									</tbody>
