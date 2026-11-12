@@ -34,6 +34,32 @@ class SaleOrder(models.Model):
     )
     partner_id = fields.Many2one(domain="[('parent_id', '==', False)]")
     partner_shipping_id = fields.Many2one(domain="[('parent_id', '==', partner_id)]")
+
+    def action_view_devoluciones(self):
+        """Compatibilidad con la vista de devoluciones de pmant.
+
+        Algunas instalaciones conservaron el botón XML pero no cargaron el
+        método Python correspondiente. Mantenerlo aquí permite validar la
+        vista y conserva el comportamiento esperado del botón.
+        """
+        self.ensure_one()
+        task = self.ots if 'ots' in self._fields else False
+        if not task:
+            raise UserError('No hay una orden de trabajo asociada a esta venta.')
+        returns = self.env['stock.picking'].search([
+            ('tarea_id', '=', task.id),
+            ('is_devolucion_repuesto', '=', True),
+        ])
+        if not returns:
+            raise UserError('No hay devoluciones de repuestos asociadas a esta tarea.')
+        return {
+            'name': 'Devoluciones de repuestos',
+            'type': 'ir.actions.act_window',
+            'res_model': 'stock.picking',
+            'view_mode': 'list,form',
+            'domain': [('id', 'in', returns.ids)],
+        }
+
     @api.model
     def create(self, vals):
         res = super().create(vals)

@@ -6,12 +6,12 @@
 			<field name="default" eval="False" />
 			<field name="format">A4</field>
 			<field name="orientation">Portrait</field>
-			<field name="margin_top">10</field>
-			<field name="margin_bottom">20</field>
-			<field name="margin_left">7</field>
-			<field name="margin_right">7</field>
+			<field name="margin_top">7</field>
+			<field name="margin_bottom">12</field>
+			<field name="margin_left">5</field>
+			<field name="margin_right">5</field>
 			<field name="disable_shrinking" eval="True" />
-			<field name="dpi">110</field>
+			<field name="dpi">90</field>
 		</record>
 		<record id="action_reporte_guias" model="ir.actions.report">
 			<field name="name">Guia Electronica</field>
@@ -30,7 +30,8 @@
 					<t t-call="web.html_container">
 						<t t-if="not o" t-set="o" t-value="doc" />
 						<t t-set="o" t-value="o.with_context(lang=lang)" />
-						<div class="article" t-att-data-oe-model="o and o._name" t-att-data-oe-id="o and o.id" t-att-data-oe-lang="o and o.env.context.get('lang')">
+						<div class="article fdc-report-compact" style="font-family:Arial, sans-serif; font-size:9px; line-height:1.18;" t-att-data-oe-model="o and o._name" t-att-data-oe-id="o and o.id" t-att-data-oe-lang="o and o.env.context.get('lang')">
+							<style>.fdc-report-compact div,.fdc-report-compact span,.fdc-report-compact p{font-size:9px!important;line-height:1.18!important}.fdc-report-compact table{font-size:9px!important}.fdc-report-compact td,.fdc-report-compact th{padding:3px 5px!important}.fdc-report-compact p{margin-bottom:2px}</style>
 							<!--
 							Header
 							<div class="header o_company_#{company.id}_layout factura" t-att-style="report_header_style">

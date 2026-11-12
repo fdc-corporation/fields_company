@@ -6,10 +6,10 @@
 			<field name="format">A4</field>
 			<!-- A4 ya define el tamaño 210x297 -->
 			<field name="orientation">Portrait</field>
-			<field name="margin_top">10.00</field>
-			<field name="margin_bottom">32</field>
-			<field name="margin_left">0</field>
-			<field name="margin_right">0</field>
+			<field name="margin_top">7</field>
+			<field name="margin_bottom">12</field>
+			<field name="margin_left">5</field>
+			<field name="margin_right">5</field>
 			<field name="header_line" eval="False" />
 			<field name="header_spacing">0</field>
 			<field name="dpi">90</field>
@@ -31,7 +31,8 @@
 					<t t-call="web.html_container">
 						<t t-if="not o" t-set="o" t-value="doc" />
 						<!-- <t t-set="o" t-value="doc"/> -->
-						<div class="article" t-att-data-oe-model="o and o._name" t-att-data-oe-id="o and o.id" t-att-data-oe-lang="o and o.env.context.get('lang')">
+						<div class="article fdc-report-compact" style="font-family:Arial, sans-serif; font-size:9px; line-height:1.18;" t-att-data-oe-model="o and o._name" t-att-data-oe-id="o and o.id" t-att-data-oe-lang="o and o.env.context.get('lang')">
+							<style>.fdc-report-compact table{font-size:9px}.fdc-report-compact td,.fdc-report-compact th{padding:3px 5px}.fdc-report-compact p{margin-bottom:2px}</style>
 							<div class="row mb-2">
 								<!-- LOGO Y EMPRESA -->
 								<div class="col-3 text-left">
