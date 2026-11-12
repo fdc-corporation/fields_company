@@ -2,26 +2,38 @@
 <odoo>
 	<template id="template_sale_id" name="template_sale_name" inherit_id="sale.report_saleorder_document">
 		<xpath expr="//t[@t-call='web.external_layout']" position="replace">
-			<t t-call="web.html_container">
+			<t>
 				<t t-set="doc" t-value="doc.with_context(lang=doc.partner_id.lang)" />
 				<t t-set="forced_vat" t-value="doc.fiscal_position_id.foreign_vat" />
-				<div class="page fdc-report-compact" style="font-family:Arial, sans-serif; font-size:9px; line-height:1.18;">
-					<style>.fdc-report-compact table{font-size:9px!important}.fdc-report-compact td,.fdc-report-compact th{padding:3px 5px!important}.fdc-report-compact p{margin-bottom:2px}.fdc-report-compact h3{font-size:16px}.fdc-report-compact h5{font-size:12px}</style>
+				<div class="page fdc-sale-report">
+					<style>
+						.fdc-sale-report{font-family:Arial,sans-serif;font-size:7.5px;line-height:1.15;color:#111}
+						.fdc-sale-report *{box-sizing:border-box}.fdc-sale-header{position:fixed;top:-25mm;left:0;right:0;height:22mm}
+						.fdc-sale-header .color-line{height:2mm;background:linear-gradient(90deg,#169dca 0 25%,#111 25% 50%,#e51f2b 50% 75%,#111 75%)}
+						.fdc-sale-header-table{width:100%;border-collapse:collapse;margin-top:2mm}.fdc-sale-header-table td{border:0!important;padding:0 2mm!important;vertical-align:top}
+						.fdc-sale-logo{max-width:38mm;max-height:17mm}.fdc-company{text-align:center;font-size:7px;line-height:1.12}.fdc-company strong{font-size:8px}
+						.fdc-doc-box{text-align:center;font-size:8px}.fdc-doc-title{background:#e8f1f5;font-size:9px;font-weight:700;padding:2mm 1mm;margin-bottom:2mm}
+						.fdc-sale-report table{font-size:7.5px!important;line-height:1.15}.fdc-sale-report td,.fdc-sale-report th{padding:1.2mm 1.5mm!important}.fdc-sale-report p{margin-bottom:1mm}
+						.fdc-sale-report #informations{margin:0 0 2mm!important}.fdc-sale-report #informations table{margin:0!important}.fdc-sale-report #informations tr:nth-child(odd){background:#f0f3f5}
+						.fdc-sale-report #informations strong{text-transform:uppercase;font-size:7.5px}.fdc-sale-report h5{font-size:9px!important;text-align:left!important;background:#f0f3f5;padding:1.8mm 2mm;margin:2mm 0 0!important}
+						.fdc-sale-report .o_main_table{margin:0!important;border-bottom:0.3mm solid #222!important}.fdc-sale-report .o_main_table thead th{font-size:7px!important;border-bottom:0.3mm solid #222!important;white-space:nowrap}
+						.fdc-sale-report .o_main_table tbody tr:nth-child(odd){background:#f0f3f5}.fdc-sale-report .o_main_table tbody td{padding-top:1.5mm!important;padding-bottom:1.5mm!important;vertical-align:top}
+						.fdc-sale-report .o_main_table img{max-width:17mm!important;max-height:17mm!important;object-fit:contain}.fdc-sale-report .o_total_table{font-size:7.5px!important}
+						.fdc-sale-report .fdc-brand-strip{position:fixed;left:0;right:0;bottom:-12mm;margin:0!important;height:11mm;background:#fff}.fdc-sale-report .fdc-brand-strip img{max-width:24mm!important;max-height:9mm!important;object-fit:contain}
+						.fdc-sale-footer{position:fixed;left:0;right:0;bottom:-22mm;height:8mm;border-top:0.3mm solid #222;padding-top:1mm;font-size:6.5px;background:#fff}.fdc-sale-footer table{width:100%;border:0!important}.fdc-sale-footer td{padding:0!important;border:0!important;width:33.333%}
+					</style>
+					<div class="fdc-sale-header">
+						<div class="color-line"/>
+						<table class="fdc-sale-header-table"><tr>
+							<td style="width:32%;"><img t-if="doc.company_id.logo" t-att-src="image_data_uri(doc.company_id.logo)" class="fdc-sale-logo" alt="Logo"/></td>
+							<td class="fdc-company" style="width:40%;"><strong t-field="doc.company_id.name"/><br/><span t-field="doc.company_id.street"/><br/><span t-esc="doc.company_id.city or ''"/> - <span t-esc="doc.company_id.zip or ''"/><br/><span t-field="doc.company_id.vat"/><br/><em>Ofrecemos Soluciones... Generamos Confianza</em></td>
+							<td class="fdc-doc-box" style="width:28%;"><div class="fdc-doc-title"><span t-if="doc.state in ['draft','sent']">Cotización</span><span t-else="">Orden de Venta</span></div><strong t-field="doc.name"/></td>
+						</tr></table>
+					</div>
+					<div class="fdc-sale-footer"><table><tr><td>servicios@fdc-corporation.com<br/>ventas@fdc-corporation.com</td><td style="text-align:center;">https://fdc-corporation.com<br/>Página <span class="page"/> / <span class="topage"/></td><td style="text-align:right;">+51 981 094 754<br/>+51 960 217 220</td></tr></table></div>
 					<div class="oe_structure" />
-					<h3 class="mt-4" style="color:black;text-align:center;font-weight: 800;margin-bottom:-2px;letter-spacing:3px;">
-						<span t-if="env.context.get('proforma', False) or is_pro_forma">
-							Pro-Forma Invoice
-						</span>
-						<span t-elif="doc.state in ['draft','sent']">
-							Cotización
-						</span>
-						<span t-else="">
-							Orden de venta
-						</span>
-					</h3>
-					<h3 style="color:black;text-align:center;font-weight: 800;margin-bottom:20px;" t-field="doc.name" />
 					<div class="row mb-4" id="informations">
-						<table class="table table-sm" style=" border:0px !important;font-size: 12px;">
+						<table class="table table-sm" style="border:0!important;">
 							<tbody style="border:0px !important;">
 								<tr style="border:0px !important;">
 									<td class="col-4" style="border:0px !important;">
@@ -127,7 +139,7 @@
 					<t t-set="display_taxes" t-value="not hide_taxes_details and any(l._has_taxes() for l in lines_to_report)" />
 					<t t-set="index" t-value="0" />
 					<div class="oe_structure" />
-					<table class="o_has_total_table table o_main_table table-borderless" style="font-size:12px !important;">
+					<table class="o_has_total_table table o_main_table table-borderless">
 						<!-- In case we want to repeat the header, remove "display: table-row-group" -->
 						<thead style="display: table-row-group">
 							<tr>
@@ -378,7 +390,7 @@
 					<div class="clearfix" name="so_total_summary">
 						<div id="total" class="row mt-n3" name="total">
 							<div t-attf-class="#{'col-6' if report_type != 'html' else 'col-sm-7 col-md-6'} ms-auto">
-								<table class="o_total_table table table-borderless" style="font-size:12px;">
+								<table class="o_total_table table table-borderless">
 									<!-- Tax totals -->
 									<t t-call="sale.document_tax_totals">
 										<t t-set="tax_totals" t-value="doc.tax_totals" />
@@ -539,7 +551,7 @@
 							</tr>
 						</tbody>
 					</table>
-					<div style="margin-top: 25px;">
+					<div class="fdc-brand-strip">
 						<table style="width: 100%; text-align: center; border:0px !important;backgrount-color:white !important;">
 							<tbody style="border:0px !important;">
 								<tr style="border:0px !important;">
