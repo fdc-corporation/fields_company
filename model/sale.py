@@ -1,6 +1,4 @@
-from odoo import models, fields, api, Command  
-from odoo.exceptions import UserError, AccessError
-from itertools import groupby
+from odoo import models, fields, api
 
 
 class SaleOrder(models.Model):
@@ -29,158 +27,21 @@ class SaleOrder(models.Model):
     )
     mostrar_url = fields.Boolean(
         string="Mostrar URL del producto",
-        defaullt=False,
+        default=False,
         help="Indica si se debe mostrar la URL del producto en las líneas de la cotización."
     )
     partner_id = fields.Many2one(domain="[('parent_id', '==', False)]")
     partner_shipping_id = fields.Many2one(domain="[('parent_id', '==', partner_id)]")
 
-    # Compatibilidad para instalaciones donde se desplegaron las vistas de
-    # stock de pmant, pero no su extensión Python de sale.order.
-    is_confirm_repuestos = fields.Boolean(
-        string='Repuestos confirmados', compute='_compute_pmant_stock_indicators'
-    )
-    is_confirm_devolucion = fields.Boolean(
-        string='Devolución confirmada', compute='_compute_pmant_stock_indicators'
-    )
-    is_confirm_desecho = fields.Boolean(
-        string='Desecho confirmado', compute='_compute_pmant_stock_indicators'
-    )
-    len_mov_repuestos = fields.Integer(
-        string='Número de repuestos', compute='_compute_pmant_stock_indicators'
-    )
-    len_mov_devolucion = fields.Integer(
-        string='Número de devoluciones', compute='_compute_pmant_stock_indicators'
-    )
-    len_mov_desecho = fields.Integer(
-        string='Número de desechos', compute='_compute_pmant_stock_indicators'
-    )
-
-    def _compute_pmant_stock_indicators(self):
-        picking_fields = self.env['stock.picking']._fields
-        scrap_model = (
-            self.env['stock.scrap']
-            if self.env.registry.get('stock.scrap') else False
-        )
-        scrap_fields = scrap_model._fields if scrap_model else {}
-        can_count_pickings = {
-            'tarea_id', 'is_requerimiento', 'is_devolucion_repuesto'
-        }.issubset(picking_fields)
-        can_count_scrap = {'tarea_id'}.issubset(scrap_fields)
-
-        for record in self:
-            task = record.ots if 'ots' in record._fields else False
-            record.is_confirm_repuestos = bool(
-                task and getattr(task, 'is_confirm_repuestos', False)
-            )
-            record.is_confirm_devolucion = bool(
-                task and getattr(task, 'vissible_devolucion', False)
-            )
-            record.is_confirm_desecho = bool(
-                task and getattr(task, 'vissible_desecho', False)
-            )
-            record.len_mov_repuestos = 0
-            record.len_mov_devolucion = 0
-            record.len_mov_desecho = 0
-
-            if task and can_count_pickings:
-                record.len_mov_repuestos = self.env['stock.picking'].search_count([
-                    ('tarea_id', '=', task.id), ('is_requerimiento', '=', True)
-                ])
-                record.len_mov_devolucion = self.env['stock.picking'].search_count([
-                    ('tarea_id', '=', task.id),
-                    ('is_devolucion_repuesto', '=', True),
-                ])
-            if task and can_count_scrap:
-                record.len_mov_desecho = scrap_model.search_count([
-                    ('tarea_id', '=', task.id)
-                ])
-
-    def action_view_devoluciones(self):
-        """Compatibilidad con la vista de devoluciones de pmant.
-
-        Algunas instalaciones conservaron el botón XML pero no cargaron el
-        método Python correspondiente. Mantenerlo aquí permite validar la
-        vista y conserva el comportamiento esperado del botón.
-        """
-        self.ensure_one()
-        task = self.ots if 'ots' in self._fields else False
-        if not task:
-            raise UserError('No hay una orden de trabajo asociada a esta venta.')
-        returns = self.env['stock.picking'].search([
-            ('tarea_id', '=', task.id),
-            ('is_devolucion_repuesto', '=', True),
-        ])
-        if not returns:
-            raise UserError('No hay devoluciones de repuestos asociadas a esta tarea.')
-        return {
-            'name': 'Devoluciones de repuestos',
-            'type': 'ir.actions.act_window',
-            'res_model': 'stock.picking',
-            'view_mode': 'list,form',
-            'domain': [('id', 'in', returns.ids)],
-        }
-
-    def action_view_repuestos(self):
-        return self._open_pmant_stock_records(
-            title='Requerimientos de repuestos',
-            flag_field='is_requerimiento',
-            empty_message='No hay requerimientos de repuestos asociados a esta tarea.',
-        )
-
-    def action_view_desecho_repuestos(self):
-        self.ensure_one()
-        task = self.ots if 'ots' in self._fields else False
-        scrap_model = (
-            self.env['stock.scrap']
-            if self.env.registry.get('stock.scrap') else False
-        )
-        if not task or not scrap_model or 'tarea_id' not in scrap_model._fields:
-            raise UserError('No hay desechos de repuestos asociados a esta tarea.')
-        scraps = scrap_model.search([('tarea_id', '=', task.id)])
-        if not scraps:
-            raise UserError('No hay desechos de repuestos asociados a esta tarea.')
-        return {
-            'name': 'Desechos de repuestos',
-            'type': 'ir.actions.act_window',
-            'res_model': 'stock.scrap',
-            'view_mode': 'list,form',
-            'domain': [('id', 'in', scraps.ids)],
-        }
-
-    def _open_pmant_stock_records(self, title, flag_field, empty_message):
-        self.ensure_one()
-        task = self.ots if 'ots' in self._fields else False
-        picking_fields = self.env['stock.picking']._fields
-        if not task or not {'tarea_id', flag_field}.issubset(picking_fields):
-            raise UserError(empty_message)
-        pickings = self.env['stock.picking'].search([
-            ('tarea_id', '=', task.id), (flag_field, '=', True)
-        ])
-        if not pickings:
-            raise UserError(empty_message)
-        return {
-            'name': title,
-            'type': 'ir.actions.act_window',
-            'res_model': 'stock.picking',
-            'view_mode': 'list,form',
-            'domain': [('id', 'in', pickings.ids)],
-        }
-
     @api.model
     def create(self, vals):
         res = super().create(vals)
         for record in res:
-            print("EJECUCIÓN DE MÉTODO CREATE EN SALE ORDER")
-
             user = self.env.user
-            print("USUARIO ACTUAL:", user.name)
 
             # Buscar el gerente del usuario actual
             empleado = self.env["hr.employee"].sudo().search([("user_id", "=", user.id)], limit=1)
             gerente = empleado.parent_id.user_id if empleado else False
-
-            print("GERENTE ENCONTRADO:", gerente.name if gerente else "No se encontró gerente")
 
             if gerente:
                 # Asignar el gerente como asesor
@@ -199,104 +60,3 @@ class SaleOrder(models.Model):
                         subtype_xmlid='mail.mt_comment',
                     )
         return res
-
-
-    def _create_invoices(self, grouped=False, final=False, date=None):
-        if not self.env['account.move'].has_access('create'):
-            try:
-                self.check_access('write')
-            except AccessError:
-                return self.env['account.move']
-
-        # 1) Preparar valores de factura
-        invoice_vals_list = []
-        invoice_item_sequence = 0
-        for order in self:
-            if order.partner_invoice_id.lang:
-                order = order.with_context(lang=order.partner_invoice_id.lang)
-            order = order.with_company(order.company_id)
-
-            invoice_vals = order._prepare_invoice()
-            invoiceable_lines = order._get_invoiceable_lines(final)
-
-            if all(line.display_type for line in invoiceable_lines):
-                continue
-
-            invoice_line_vals = []
-            down_payment_section_added = False
-            for line in invoiceable_lines:
-                if not down_payment_section_added and line.is_downpayment:
-                    invoice_line_vals.append(
-                        Command.create(order._prepare_down_payment_section_line(sequence=invoice_item_sequence)),
-                    )
-                    down_payment_section_added = True
-                    invoice_item_sequence += 1
-
-                optional_values = {'sequence': invoice_item_sequence}
-                if line.is_downpayment:
-                    optional_values['quantity'] = -1.0
-                    optional_values['extra_tax_data'] = self.env['account.tax']._reverse_quantity_base_line_extra_tax_data(line.extra_tax_data)
-
-                for vals in line._prepare_invoice_lines_vals_list(**optional_values):
-                    invoice_line_vals.append(Command.create(vals))
-                invoice_item_sequence += 1
-
-            invoice_vals['invoice_line_ids'] += invoice_line_vals
-            invoice_vals_list.append(invoice_vals)
-
-        if not invoice_vals_list and self.env.context.get('raise_if_nothing_to_invoice', True):
-            raise UserError(self._nothing_to_invoice_error_message())
-
-        # 2) Agrupación
-        if not grouped:
-            new_invoice_vals_list = []
-            invoice_grouping_keys = self._get_invoice_grouping_keys()
-            invoice_vals_list = sorted(invoice_vals_list, key=lambda x: [x.get(k) for k in invoice_grouping_keys])
-            for _keys, invoices in groupby(invoice_vals_list, key=lambda x: [x.get(k) for k in invoice_grouping_keys]):
-                ref_invoice_vals = None
-                origins, payment_refs, refs = set(), set(), set()
-                for inv_vals in invoices:
-                    if not ref_invoice_vals:
-                        ref_invoice_vals = inv_vals
-                    else:
-                        ref_invoice_vals['invoice_line_ids'] += inv_vals['invoice_line_ids']
-                    origins.add(inv_vals['invoice_origin'])
-                    payment_refs.add(inv_vals['payment_reference'])
-                    refs.add(inv_vals['ref'])
-                ref_invoice_vals.update({
-                    'ref': ', '.join(refs)[:2000],
-                    'invoice_origin': ', '.join(origins),
-                    'payment_reference': len(payment_refs) == 1 and payment_refs.pop() or False,
-                })
-                new_invoice_vals_list.append(ref_invoice_vals)
-            invoice_vals_list = new_invoice_vals_list
-
-        # 3) Crear facturas
-        if len(invoice_vals_list) < len(self):
-            for invoice in invoice_vals_list:
-                seq = 1
-                for line in invoice['invoice_line_ids']:
-                    line[2]['sequence'] = self.env['sale.order.line']._get_invoice_line_sequence(new=seq, old=line[2]['sequence'])
-                    seq += 1
-
-        # --- PUNTO CRÍTICO ---
-        moves = self._create_account_invoices(invoice_vals_list, final)
-        
-        # Validación de seguridad:
-        if not moves:
-            # Si llegamos aquí, un módulo de terceros está rompiendo el retorno
-            return self.env['account.move']
-
-        # 4) Gestión de notas de crédito si el total es negativo
-        if final and (moves_to_switch := moves.sudo().filtered(lambda m: m.amount_total < 0)):
-            with self.env.protecting([moves._fields['team_id']], moves_to_switch):
-                moves_to_switch.action_switch_move_type()
-                self.invoice_ids._set_reversed_entry(moves_to_switch)
-
-        for move in moves:
-            move.message_post_with_source(
-                'mail.message_origin_link',
-                render_values={'self': move, 'origin': move.line_ids.sale_line_ids.order_id},
-                subtype_xmlid='mail.mt_note',
-            )
-        return moves

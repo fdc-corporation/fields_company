@@ -5,12 +5,6 @@ from odoo import models, fields, api
 class SaleOrderLine(models.Model):
     _inherit = 'sale.order.line'
 
-    ots = fields.Many2one(
-        'maintenance.request',
-        string='Orden de trabajo',
-        help='Compatibilidad con las vistas de repuestos de pmant.',
-    )
-
     img_ref = fields.Binary(
         string='Imagen de Referencia',
         help='Imagen del producto para referencia en la cotización.',
