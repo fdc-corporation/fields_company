@@ -8,7 +8,8 @@
     'license': 'LGPL-3',
     'category': 'Uncategorized',
     'depends': [
-        "pmant", 'base', 'contacts', 'mail', 'sale', 'stock', "web", "account_followup", "account", "crm"
+        "pmant", 'base', 'contacts', 'mail', 'sale', 'stock', 'purchase',
+        "web", "account_followup", "account", "crm"
     ],
     'data': [
         # SECURITY
@@ -25,6 +26,7 @@
         "report/report_inheriit_sale.xml",
         "report/report_guias.xml",
         "report/report_factura.xml",
+        "report/report_purchase_order.xml",
         "view/view_product.xml",
     ],
     'auto_install': False,
