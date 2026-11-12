@@ -35,6 +35,67 @@ class SaleOrder(models.Model):
     partner_id = fields.Many2one(domain="[('parent_id', '==', False)]")
     partner_shipping_id = fields.Many2one(domain="[('parent_id', '==', partner_id)]")
 
+    # Compatibilidad para instalaciones donde se desplegaron las vistas de
+    # stock de pmant, pero no su extensión Python de sale.order.
+    is_confirm_repuestos = fields.Boolean(
+        string='Repuestos confirmados', compute='_compute_pmant_stock_indicators'
+    )
+    is_confirm_devolucion = fields.Boolean(
+        string='Devolución confirmada', compute='_compute_pmant_stock_indicators'
+    )
+    is_confirm_desecho = fields.Boolean(
+        string='Desecho confirmado', compute='_compute_pmant_stock_indicators'
+    )
+    len_mov_repuestos = fields.Integer(
+        string='Número de repuestos', compute='_compute_pmant_stock_indicators'
+    )
+    len_mov_devolucion = fields.Integer(
+        string='Número de devoluciones', compute='_compute_pmant_stock_indicators'
+    )
+    len_mov_desecho = fields.Integer(
+        string='Número de desechos', compute='_compute_pmant_stock_indicators'
+    )
+
+    def _compute_pmant_stock_indicators(self):
+        picking_fields = self.env['stock.picking']._fields
+        scrap_model = (
+            self.env['stock.scrap']
+            if self.env.registry.get('stock.scrap') else False
+        )
+        scrap_fields = scrap_model._fields if scrap_model else {}
+        can_count_pickings = {
+            'tarea_id', 'is_requerimiento', 'is_devolucion_repuesto'
+        }.issubset(picking_fields)
+        can_count_scrap = {'tarea_id'}.issubset(scrap_fields)
+
+        for record in self:
+            task = record.ots if 'ots' in record._fields else False
+            record.is_confirm_repuestos = bool(
+                task and getattr(task, 'is_confirm_repuestos', False)
+            )
+            record.is_confirm_devolucion = bool(
+                task and getattr(task, 'vissible_devolucion', False)
+            )
+            record.is_confirm_desecho = bool(
+                task and getattr(task, 'vissible_desecho', False)
+            )
+            record.len_mov_repuestos = 0
+            record.len_mov_devolucion = 0
+            record.len_mov_desecho = 0
+
+            if task and can_count_pickings:
+                record.len_mov_repuestos = self.env['stock.picking'].search_count([
+                    ('tarea_id', '=', task.id), ('is_requerimiento', '=', True)
+                ])
+                record.len_mov_devolucion = self.env['stock.picking'].search_count([
+                    ('tarea_id', '=', task.id),
+                    ('is_devolucion_repuesto', '=', True),
+                ])
+            if task and can_count_scrap:
+                record.len_mov_desecho = scrap_model.search_count([
+                    ('tarea_id', '=', task.id)
+                ])
+
     def action_view_devoluciones(self):
         """Compatibilidad con la vista de devoluciones de pmant.
 
@@ -58,6 +119,52 @@ class SaleOrder(models.Model):
             'res_model': 'stock.picking',
             'view_mode': 'list,form',
             'domain': [('id', 'in', returns.ids)],
+        }
+
+    def action_view_repuestos(self):
+        return self._open_pmant_stock_records(
+            title='Requerimientos de repuestos',
+            flag_field='is_requerimiento',
+            empty_message='No hay requerimientos de repuestos asociados a esta tarea.',
+        )
+
+    def action_view_desecho_repuestos(self):
+        self.ensure_one()
+        task = self.ots if 'ots' in self._fields else False
+        scrap_model = (
+            self.env['stock.scrap']
+            if self.env.registry.get('stock.scrap') else False
+        )
+        if not task or not scrap_model or 'tarea_id' not in scrap_model._fields:
+            raise UserError('No hay desechos de repuestos asociados a esta tarea.')
+        scraps = scrap_model.search([('tarea_id', '=', task.id)])
+        if not scraps:
+            raise UserError('No hay desechos de repuestos asociados a esta tarea.')
+        return {
+            'name': 'Desechos de repuestos',
+            'type': 'ir.actions.act_window',
+            'res_model': 'stock.scrap',
+            'view_mode': 'list,form',
+            'domain': [('id', 'in', scraps.ids)],
+        }
+
+    def _open_pmant_stock_records(self, title, flag_field, empty_message):
+        self.ensure_one()
+        task = self.ots if 'ots' in self._fields else False
+        picking_fields = self.env['stock.picking']._fields
+        if not task or not {'tarea_id', flag_field}.issubset(picking_fields):
+            raise UserError(empty_message)
+        pickings = self.env['stock.picking'].search([
+            ('tarea_id', '=', task.id), (flag_field, '=', True)
+        ])
+        if not pickings:
+            raise UserError(empty_message)
+        return {
+            'name': title,
+            'type': 'ir.actions.act_window',
+            'res_model': 'stock.picking',
+            'view_mode': 'list,form',
+            'domain': [('id', 'in', pickings.ids)],
         }
 
     @api.model
