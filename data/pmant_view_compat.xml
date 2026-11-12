@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Restaura las vistas tras unificar el despliegue de pmant. -->
+    <record id="pmant.sale_order_form_movimientos" model="ir.ui.view" forcecreate="False">
+        <field name="active" eval="True"/>
+    </record>
+    <record id="pmant.inherit_move_stock_pmant" model="ir.ui.view" forcecreate="False">
+        <field name="active" eval="True"/>
+    </record>
+    <record id="pmant.stock_picking_form_pmant_reception" model="ir.ui.view" forcecreate="False">
+        <field name="active" eval="True"/>
+    </record>
+    <record id="pmant.inherit_crm_form" model="ir.ui.view" forcecreate="False">
+        <field name="active" eval="True"/>
+    </record>
+</odoo>

@@ -16,9 +16,13 @@
         'security/security.xml',
         "security/ir_rule.xml",
         "security/ir.model.access.csv",
+        # Compatibilidad temporal mientras el servidor recarga pmant 19.0.5.1.0
+        "data/pmant_view_compat.xml",
         # VIEWS
+        "view/view_sale_order.xml",
         "view/layout_report.xml",
         "view/view_company.xml",
+        "view/view_crm_lead.xml",
         # REPORTS
         "report/report_paperformat.xml",
         "report/report_inheriit_sale.xml",
