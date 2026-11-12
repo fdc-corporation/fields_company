@@ -9,10 +9,10 @@
 				<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 				<div class="page fdc-sale-report">
 					<style>
-						.fdc-sale-report{position:relative;min-height:287mm;font-family:Arial,'DejaVu Sans',sans-serif;font-size:8px;line-height:1.18;color:#111;padding-bottom:23mm}
-						.fdc-sale-report *{box-sizing:border-box}.fdc-sale-header{position:relative;width:100%;height:23mm;margin-bottom:2mm}
-						.fdc-sale-header .color-line{height:2mm;background:linear-gradient(90deg,#169dca 0 25%,#111 25% 50%,#e51f2b 50% 75%,#111 75%)}
-						.fdc-sale-header-table{width:100%;border-collapse:collapse;margin-top:2mm}.fdc-sale-header-table td{border:0!important;padding:0 2mm!important;vertical-align:top}
+						.fdc-sale-report{position:relative;min-height:297mm;font-family:Arial,'DejaVu Sans',sans-serif;font-size:8px;line-height:1.18;color:#111;padding:0 5mm 23mm}
+						.fdc-sale-report *{box-sizing:border-box}.fdc-sale-header{position:relative;height:25mm;margin:0 -5mm 2mm}
+						.fdc-sale-header .color-line{display:block;width:100%;height:2mm;object-fit:fill}
+						.fdc-sale-header-table{border-collapse:collapse;margin:2mm 5mm 0;width:calc(100% - 10mm)!important}.fdc-sale-header-table td{border:0!important;padding:0 2mm!important;vertical-align:top}
 						.fdc-sale-logo{max-width:38mm;max-height:17mm}.fdc-company{text-align:center;font-size:7px;line-height:1.12}.fdc-company strong{font-size:8px}
 						.fdc-doc-box{text-align:center;font-size:8px}.fdc-doc-title{background:#e8f1f5;font-size:9px;font-weight:700;padding:2mm 1mm;margin-bottom:2mm}
 						.fdc-sale-report table{width:100%!important;font-size:8px!important;line-height:1.18}.fdc-sale-report td,.fdc-sale-report th{padding:1.2mm 1.5mm!important}.fdc-sale-report p{margin-bottom:1mm}
@@ -22,11 +22,11 @@
 						.fdc-sale-report .o_main_table{width:100%!important;margin:0!important;border-bottom:0.3mm solid #222!important;table-layout:auto}.fdc-sale-report .o_main_table thead th{font-size:7.5px!important;border-bottom:0.3mm solid #222!important;white-space:nowrap}
 						.fdc-sale-report .o_main_table tbody tr:nth-child(odd){background:#f0f3f5}.fdc-sale-report .o_main_table tbody td{padding-top:1.5mm!important;padding-bottom:1.5mm!important;vertical-align:top}
 						.fdc-sale-report .o_main_table img{max-width:17mm!important;max-height:17mm!important;object-fit:contain}.fdc-sale-report .o_total_table{font-size:8px!important}.fdc-sale-report #total{width:38%!important;margin-left:auto!important;margin-right:0!important}
-						.fdc-sale-report .fdc-brand-strip{position:absolute;left:0;right:0;bottom:10mm;margin:0!important;height:11mm;background:#fff}.fdc-sale-report .fdc-brand-strip img{max-width:24mm!important;max-height:9mm!important;object-fit:contain}
+						.fdc-sale-report .fdc-brand-strip{position:absolute;left:5mm;right:5mm;bottom:11mm;margin:0!important;height:11mm;background:#fff}.fdc-sale-report .fdc-brand-strip td{width:33.333%;height:11mm;text-align:center;vertical-align:middle;border:0!important}.fdc-sale-report .fdc-brand-strip img{width:auto!important;height:auto!important;max-width:36mm!important;max-height:10mm!important;object-fit:contain}
 						.fdc-sale-footer{position:absolute;left:0;right:0;bottom:0;height:8mm;border-top:0.3mm solid #222;padding-top:1mm;font-size:6.5px;background:#fff}.fdc-sale-footer table{width:100%;border:0!important}.fdc-sale-footer td{padding:0!important;border:0!important;width:33.333%}
 					</style>
 					<div class="fdc-sale-header">
-						<div class="color-line"/>
+						<img class="color-line" src="/fields_company/static/src/img/report/fdc-top-line.png" alt=""/>
 						<table class="fdc-sale-header-table"><tr>
 							<td style="width:32%;"><img t-if="doc.company_id.logo" t-att-src="image_data_uri(doc.company_id.logo)" class="fdc-sale-logo" alt="Logo"/></td>
 							<td class="fdc-company" style="width:40%;"><strong t-field="doc.company_id.name"/><br/><span t-field="doc.company_id.street"/><br/><span t-esc="doc.company_id.city or ''"/> - <span t-esc="doc.company_id.zip or ''"/><br/><span t-field="doc.company_id.vat"/><br/><em>Ofrecemos Soluciones... Generamos Confianza</em></td>
@@ -470,27 +470,11 @@
 						</tbody>
 					</table>
 					<div class="fdc-brand-strip">
-						<table style="width: 100%; text-align: center; border:0px !important;backgrount-color:white !important;">
-							<tbody style="border:0px !important;">
-								<tr style="border:0px !important;">
-									<td style="width: 20%;border:0px !important;">
-										<img width="120px" src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/ce/K%C3%A4rcher_Logo_2015.svg/800px-K%C3%A4rcher_Logo_2015.svg.png" alt="" />
-									</td>
-									<td style="width: 20%;border:0px !important;">
-										<img width="120px" src="https://storagecompat.com.uy/sites/default/files/logo_0.png" alt="" />
-									</td>
-									<td style="width: 20%;border:0px !important;">
-										<img width="120px" src="https://cdn.cookielaw.org/logos/214cc03f-7b8e-4583-a7e7-0339b52694d8/dd84aee9-603a-47d4-89d7-ed9c468188df/72196acc-3b85-4dee-97ed-15803f846200/cp_privacy_policy_logo.png" alt="" />
-									</td>
-									<td style="width: 20%;border:0px !important;">
-										<img width="80px" src="https://logodix.com/logo/628125.png" alt="" />
-									</td>
-									<td style="width: 20%;border:0px !important;">
-										<img width="80px" src="https://ajm.es/wp-content/uploads/2017/06/samoa-logo-2017.png" alt="" />
-									</td>
-								</tr>
-							</tbody>
-						</table>
+						<table><tr>
+							<td><img src="/fields_company/static/src/img/report/storage-compat.png" alt="Storage Compat"/></td>
+							<td><img src="/fields_company/static/src/img/report/chicago-pneumatic.png" alt="Chicago Pneumatic"/></td>
+							<td><img src="/fields_company/static/src/img/report/pneumatech.png" alt="Pneumatech"/></td>
+						</tr></table>
 					</div>
 				</div>
 			</t>
