@@ -17,7 +17,6 @@
         "security/ir_rule.xml",
         "security/ir.model.access.csv",
         # VIEWS
-        "view/view_sale_order.xml",
         "view/layout_report.xml",
         "view/view_company.xml",
         "view/view_crm_lead.xml",
