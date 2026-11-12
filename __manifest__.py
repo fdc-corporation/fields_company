@@ -19,15 +19,12 @@
         # VIEWS
         "view/layout_report.xml",
         "view/view_company.xml",
-        "view/view_crm_lead.xml",
-        "view/view_form_res_partner.xml",
         # REPORTS
         "report/report_paperformat.xml",
         "report/report_inheriit_sale.xml",
         "report/report_guias.xml",
         "report/report_factura.xml",
         "report/report_purchase_order.xml",
-        "view/view_product.xml",
     ],
     'auto_install': False,
     'application': False,
