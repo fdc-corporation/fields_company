@@ -112,7 +112,14 @@
                     }
                     .fdc-purchase .fdc-totals td {
                         padding: 1.3mm 2mm;
-                        font-size: 7px;
+                        font-size: 6.5px !important;
+                        line-height: 1.15 !important;
+                    }
+                    .fdc-purchase .fdc-totals td *,
+                    .fdc-purchase .fdc-totals strong,
+                    .fdc-purchase .fdc-totals span {
+                        font-size: 6.5px !important;
+                        line-height: 1.15 !important;
                     }
                     .fdc-purchase .fdc-totals tr:last-child td {
                         color: #1388bc;
