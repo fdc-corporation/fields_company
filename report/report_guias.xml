@@ -58,14 +58,14 @@
                             .fdc-guide .header-table td { padding: 0 1.5mm; border: 0; vertical-align: top; }
                             .fdc-guide .company-logo { max-width: 42mm; max-height: 20mm; object-fit: contain; }
                             .fdc-guide .header-qr { width: 17mm; height: 17mm; object-fit: contain; }
-                            .fdc-guide .company-data { text-align: center; font-size: 7.5px; line-height: 1.14; }
-                            .fdc-guide .company-data strong { font-size: 8.5px; }
-                            .fdc-guide .document-data { text-align: center; font-size: 7.5px; }
+                            .fdc-guide .company-data { text-align: center; font-size: 8.5px; line-height: 1.16; }
+                            .fdc-guide .company-data strong { font-size: 9.5px; }
+                            .fdc-guide .document-data { text-align: center; font-size: 8.5px; }
                             .fdc-guide .document-title {
                                 padding: 1.5mm 1mm;
                                 margin-bottom: 1.5mm;
                                 background: #e9f1f4;
-                                font-size: 8.5px;
+                                font-size: 9.5px;
                                 font-weight: 700;
                             }
                             .fdc-guide .section { margin-bottom: 2mm; table-layout: fixed; }
@@ -109,19 +109,19 @@
                             .fdc-guide .section *,
                             .fdc-guide .moves,
                             .fdc-guide .moves * {
-                                font-size: 8px !important;
-                                line-height: 1.18 !important;
+                                font-size: 10px !important;
+                                line-height: 1.2 !important;
                             }
                             .fdc-guide .section-title td,
                             .fdc-guide .single-title {
                                 padding: 1mm 2mm !important;
-                                font-size: 8.5px !important;
+                                font-size: 10.5px !important;
                             }
                             .fdc-guide .section-body td,
                             .fdc-guide .transport-grid > tbody > tr > td { padding: 1.1mm 2mm !important; }
-                            .fdc-guide .moves th { padding: 1mm 2mm !important; font-size: 8.5px !important; }
-                            .fdc-guide .moves td { padding: 1mm 2mm !important; }
-                            .fdc-guide .detail-table td { padding: 0.35mm 0 !important; }
+                            .fdc-guide .moves th { padding: 1.2mm 2mm !important; font-size: 10.5px !important; }
+                            .fdc-guide .moves td { padding: 1.2mm 2mm !important; }
+                            .fdc-guide .detail-table td { padding: 0.45mm 0 !important; }
                         </style>
 
                         <div class="guide-header">
