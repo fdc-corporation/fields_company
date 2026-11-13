@@ -3,116 +3,309 @@
     <template id="report_purchaseorder_fdc" inherit_id="purchase.report_purchaseorder_document">
         <xpath expr="//t[@t-call='web.external_layout']" position="replace">
             <t t-set="o" t-value="o.with_context(lang=o.partner_id.lang)"/>
-            <t>
-                <div class="page fdc-purchase" style="font-family:Arial, sans-serif; font-size:9px; line-height:1.18; color:#111;">
-                    <style>
-                        .fdc-purchase .brand-line {height: 8px; background: linear-gradient(90deg,#159dcc 0 24%,#111 24% 50%,#e41f2b 50% 75%,#111 75%); margin: -10mm -7mm 10px;}
-                        .fdc-purchase .section-title {background:#f0f3f5; font-weight:700; font-size:10px; padding:4px 7px;}
-                        .fdc-purchase .muted-row {background:#f0f3f5;}
-                        .fdc-purchase table {width:100%; border-collapse:collapse;}
-                        .fdc-purchase th {border-bottom:1px solid #111; padding:4px 4px; font-weight:700;}
-                        .fdc-purchase td {padding:4px 4px; vertical-align:top;}
-                        .fdc-purchase .lines tbody tr:nth-child(even) {background:#f0f3f5;}
-                        .fdc-purchase .amount {text-align:right; white-space:nowrap;}
-                        .fdc-purchase .footer {position:fixed; bottom:0; left:0; right:0; border-top:1px solid #111; padding-top:4px; font-size:9px;}
-                    </style>
+            <t t-set="shipping" t-value="o.dest_address_id or o.company_id.partner_id"/>
+            <div class="page fdc-purchase">
+                <style>
+                    .fdc-purchase {
+                        position: relative;
+                        box-sizing: border-box;
+                        width: 210mm;
+                        min-height: 297mm;
+                        margin: 0;
+                        padding: 0 5mm 14mm;
+                        color: #080808;
+                        font-family: Arial, Helvetica, sans-serif;
+                        font-size: 7.2px;
+                        line-height: 1.12;
+                    }
+                    .fdc-purchase * { box-sizing: border-box; }
+                    .fdc-purchase table { width: 100%; border-collapse: collapse; }
+                    .fdc-purchase .fdc-top-line {
+                        display: block;
+                        width: 210mm;
+                        height: 2.5mm;
+                        margin: 0 -5mm 3mm;
+                    }
+                    .fdc-purchase .fdc-brand-fallback {
+                        width: 210mm;
+                        height: 2.5mm;
+                        margin: 0 -5mm 3mm;
+                        background: #248fbc;
+                        border-right: 52mm solid #181818;
+                        border-left: 52mm solid #236899;
+                    }
+                    .fdc-purchase .fdc-head { table-layout: fixed; margin-bottom: 2.5mm; }
+                    .fdc-purchase .fdc-head td { padding: 0 1.4mm; vertical-align: top; }
+                    .fdc-purchase .fdc-logo { max-width: 31mm; max-height: 16mm; object-fit: contain; }
+                    .fdc-purchase .fdc-company {
+                        text-align: center;
+                        font-size: 6.4px;
+                        line-height: 1.12;
+                    }
+                    .fdc-purchase .fdc-company-name { font-size: 7.2px; font-weight: 700; }
+                    .fdc-purchase .fdc-docbox { text-align: center; font-size: 6.7px; }
+                    .fdc-purchase .fdc-doc-title {
+                        margin-bottom: 2mm;
+                        padding: 1.5mm 1mm;
+                        background: #eaf1f4;
+                        font-size: 8px;
+                        font-weight: 700;
+                    }
+                    .fdc-purchase .fdc-section-title {
+                        padding: 1.1mm 1.6mm;
+                        background: #eef1f3;
+                        font-size: 7px;
+                        font-weight: 700;
+                        text-transform: uppercase;
+                    }
+                    .fdc-purchase .fdc-info { table-layout: fixed; margin-bottom: 2mm; }
+                    .fdc-purchase .fdc-info td {
+                        width: 50%;
+                        padding: 1.2mm 1.6mm 0.8mm;
+                        vertical-align: top;
+                    }
+                    .fdc-purchase .fdc-label { font-weight: 700; }
+                    .fdc-purchase .fdc-meta {
+                        table-layout: fixed;
+                        margin-bottom: 2mm;
+                        background: #eef1f3;
+                    }
+                    .fdc-purchase .fdc-meta td { padding: 1.2mm 1.8mm; vertical-align: top; }
+                    .fdc-purchase .fdc-lines {
+                        table-layout: fixed;
+                        font-size: 6.2px;
+                        line-height: 1.08;
+                    }
+                    .fdc-purchase .fdc-lines th {
+                        padding: 1mm 1.1mm;
+                        border-bottom: 0.35mm solid #171717;
+                        text-align: left;
+                        font-size: 6.5px;
+                        font-weight: 700;
+                    }
+                    .fdc-purchase .fdc-lines td {
+                        padding: 1mm 1.1mm;
+                        vertical-align: top;
+                    }
+                    .fdc-purchase .fdc-lines tbody tr:nth-child(even) { background: #eef1f3; }
+                    .fdc-purchase .fdc-lines .fdc-section-line { background: #dfe5e8 !important; }
+                    .fdc-purchase .fdc-number { text-align: right; white-space: nowrap; }
+                    .fdc-purchase .fdc-description { white-space: pre-line; overflow-wrap: anywhere; }
+                    .fdc-purchase .fdc-total-area {
+                        position: relative;
+                        width: 100%;
+                        min-height: 15mm;
+                        border-top: 0.35mm solid #171717;
+                    }
+                    .fdc-purchase .fdc-totals {
+                        position: absolute;
+                        top: 0;
+                        right: 0;
+                        width: 50%;
+                        background: #eef1f3;
+                    }
+                    .fdc-purchase .fdc-totals td {
+                        padding: 1.3mm 2mm;
+                        font-size: 6.8px;
+                    }
+                    .fdc-purchase .fdc-totals tr:last-child td {
+                        color: #1388bc;
+                        font-weight: 700;
+                    }
+                    .fdc-purchase .fdc-notes { margin-top: 2mm; font-size: 6.5px; }
+                    .fdc-purchase .fdc-footer {
+                        position: absolute;
+                        right: 5mm;
+                        bottom: 3mm;
+                        left: 5mm;
+                        padding-top: 1.4mm;
+                        border-top: 0.3mm solid #111;
+                        font-size: 5.7px;
+                        line-height: 1.22;
+                    }
+                    .fdc-purchase .fdc-footer td { width: 33.333%; vertical-align: top; }
+                </style>
 
-                    <div class="brand-line"/>
-                    <table style="margin-bottom:16px;">
-                        <tr>
-                            <td style="width:35%;">
-                                <img t-if="o.company_id.logo" t-att-src="image_data_uri(o.company_id.logo)" style="max-width:180px; max-height:75px;" alt="Logo"/>
-                            </td>
-                            <td style="width:35%; text-align:center; line-height:1.25;">
-                                <strong t-field="o.company_id.name"/><br/>
-                                <span t-field="o.company_id.street"/><br/>
-                                <span><t t-esc="o.company_id.city or ''"/> <t t-esc="o.company_id.zip or ''"/></span><br/>
-                                <em>Ofrecemos soluciones... Generamos confianza</em>
-                            </td>
-                            <td style="width:30%; text-align:center;">
-                                <div class="section-title">Orden de Compra</div>
-                                <strong>#<span t-field="o.name"/></strong><br/>
-                                <strong>Fecha de Emisión: </strong>
+                <img t-if="o.report_top_line"
+                     class="fdc-top-line"
+                     t-att-src="image_data_uri(o.report_top_line)"
+                     alt="Franja corporativa"/>
+                <div t-else="" class="fdc-brand-fallback"/>
+
+                <table class="fdc-head">
+                    <colgroup>
+                        <col style="width:30%;"/>
+                        <col style="width:42%;"/>
+                        <col style="width:28%;"/>
+                    </colgroup>
+                    <tr>
+                        <td>
+                            <img t-if="o.company_id.logo"
+                                 class="fdc-logo"
+                                 t-att-src="image_data_uri(o.company_id.logo)"
+                                 alt="FDC Corporation"/>
+                        </td>
+                        <td class="fdc-company">
+                            <div class="fdc-company-name"><span t-field="o.company_id.name"/></div>
+                            <div>
+                                <span t-if="o.company_id.street" t-field="o.company_id.street"/>
+                                <t t-if="o.company_id.street2">, <span t-field="o.company_id.street2"/></t>
+                            </div>
+                            <div>
+                                <span t-if="o.company_id.city" t-field="o.company_id.city"/>
+                                <t t-if="o.company_id.zip"> - <span t-field="o.company_id.zip"/></t>
+                            </div>
+                            <div t-if="o.company_id.vat">RUC: <span t-field="o.company_id.vat"/></div>
+                            <div style="margin-top:1mm; font-style:italic;">Ofrecemos Soluciones... Generamos Confianza</div>
+                        </td>
+                        <td class="fdc-docbox">
+                            <div class="fdc-doc-title">Orden de Compra</div>
+                            <div style="font-weight:700;">#<span t-field="o.name"/></div>
+                            <div style="margin-top:1.8mm;">
+                                <span class="fdc-label">Fecha de Emisi&#243;n: </span>
                                 <span t-field="o.date_order" t-options="{'widget':'date'}"/>
-                            </td>
-                        </tr>
-                    </table>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
 
-                    <table style="margin-bottom:14px;">
-                        <tr>
-                            <td class="section-title" style="width:50%;">DIRECCIÓN DE ENVÍO</td>
-                            <td class="section-title" style="width:50%;">INFORMACIÓN DEL PROVEEDOR</td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <t t-set="shipping" t-value="o.dest_address_id or o.company_id.partner_id"/>
-                                <strong t-field="shipping.name"/><br/>
-                                <span t-field="shipping" t-options='{"widget":"contact","fields":["address","phone","vat"],"no_marker":true}'/>
-                            </td>
-                            <td>
-                                <strong t-field="o.partner_id.name"/><br/>
-                                <span t-field="o.partner_id" t-options='{"widget":"contact","fields":["address","phone","vat"],"no_marker":true}'/>
-                                <strong>Condición de pago: </strong><span t-field="o.payment_term_id"/>
-                            </td>
-                        </tr>
-                    </table>
+                <table>
+                    <tr>
+                        <td class="fdc-section-title" style="width:50%;">Direcci&#243;n de env&#237;o</td>
+                        <td class="fdc-section-title" style="width:50%;">Informaci&#243;n del proveedor</td>
+                    </tr>
+                </table>
+                <table class="fdc-info">
+                    <tr>
+                        <td>
+                            <div class="fdc-label"><span t-field="shipping.name"/></div>
+                            <div>
+                                <span t-if="shipping.street" t-field="shipping.street"/>
+                                <t t-if="shipping.street2">, <span t-field="shipping.street2"/></t>
+                                <t t-if="shipping.city">, <span t-field="shipping.city"/></t>
+                                <t t-if="shipping.state_id">, <span t-field="shipping.state_id"/></t>
+                                <t t-if="shipping.country_id">, <span t-field="shipping.country_id"/></t>
+                            </div>
+                            <div t-if="shipping.phone"><span class="fdc-label">Tel: </span><span t-field="shipping.phone"/></div>
+                            <div t-if="shipping.vat"><span class="fdc-label">RUC: </span><span t-field="shipping.vat"/></div>
+                        </td>
+                        <td>
+                            <div class="fdc-label"><span t-field="o.partner_id.name"/></div>
+                            <div>
+                                <span t-if="o.partner_id.street" t-field="o.partner_id.street"/>
+                                <t t-if="o.partner_id.street2">, <span t-field="o.partner_id.street2"/></t>
+                                <t t-if="o.partner_id.city">, <span t-field="o.partner_id.city"/></t>
+                                <t t-if="o.partner_id.state_id">, <span t-field="o.partner_id.state_id"/></t>
+                                <t t-if="o.partner_id.country_id">, <span t-field="o.partner_id.country_id"/></t>
+                            </div>
+                            <div t-if="o.partner_id.phone"><span class="fdc-label">Tel: </span><span t-field="o.partner_id.phone"/></div>
+                            <div t-if="o.partner_id.vat"><span class="fdc-label">RUC: </span><span t-field="o.partner_id.vat"/></div>
+                            <div t-if="o.payment_term_id"><span class="fdc-label">Condici&#243;n de pago: </span><span t-field="o.payment_term_id"/></div>
+                        </td>
+                    </tr>
+                </table>
 
-                    <table class="muted-row" style="margin-bottom:14px;">
-                        <tr>
-                            <td style="width:50%;"><strong>COMPRADOR</strong><br/><span t-field="o.user_id"/></td>
-                            <td style="width:25%;"><strong>FECHA DE ENTREGA</strong><br/><span t-field="o.date_planned" t-options="{'widget':'date'}"/></td>
-                            <td style="width:25%;"><strong>MONEDA</strong><br/><span t-field="o.currency_id"/></td>
-                        </tr>
-                    </table>
+                <table class="fdc-meta">
+                    <colgroup>
+                        <col style="width:50%;"/>
+                        <col style="width:25%;"/>
+                        <col style="width:25%;"/>
+                    </colgroup>
+                    <tr>
+                        <td><span class="fdc-label">COMPRADOR</span><br/><span t-field="o.user_id"/></td>
+                        <td>
+                            <span class="fdc-label">FECHA DE ENTREGA</span><br/>
+                            <span t-if="o.date_planned" t-field="o.date_planned" t-options="{'widget':'date'}"/>
+                        </td>
+                        <td><span class="fdc-label">MONEDA</span><br/><span t-field="o.currency_id"/></td>
+                    </tr>
+                </table>
 
-                    <table class="lines">
-                        <thead>
-                            <tr>
-                                <th style="text-align:left; width:51%;">Notas</th>
-                                <th class="amount">Qty</th>
-                                <th class="amount">Unit Price</th>
-                                <th class="amount">Disc.</th>
-                                <th class="amount">Taxes</th>
-                                <th class="amount">Amount</th>
+                <table class="fdc-lines">
+                    <colgroup>
+                        <col style="width:50%;"/>
+                        <col style="width:9%;"/>
+                        <col style="width:13%;"/>
+                        <col style="width:8%;"/>
+                        <col style="width:9%;"/>
+                        <col style="width:11%;"/>
+                    </colgroup>
+                    <thead>
+                        <tr>
+                            <th>Notas</th>
+                            <th class="fdc-number">Qty</th>
+                            <th class="fdc-number">Unit Price</th>
+                            <th class="fdc-number">Disc.</th>
+                            <th class="fdc-number">Taxes</th>
+                            <th class="fdc-number">Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <t t-foreach="o.order_line.filtered(lambda line: line.display_type or line.product_qty != 0)" t-as="line">
+                            <tr t-if="not line.display_type">
+                                <td class="fdc-description"><span t-field="line.name"/></td>
+                                <td class="fdc-number">
+                                    <span t-field="line.product_qty"/><br/>
+                                    <span t-field="line.product_uom_id"/>
+                                </td>
+                                <td class="fdc-number">
+                                    <span t-field="line.price_unit"
+                                          t-options="{'widget':'monetary','display_currency':o.currency_id}"/>
+                                </td>
+                                <td class="fdc-number"><span t-field="line.discount"/>%</td>
+                                <td class="fdc-number">
+                                    <span t-out="', '.join(tax.tax_label for tax in line.tax_ids if tax.tax_label)"/>
+                                </td>
+                                <td class="fdc-number">
+                                    <span t-field="line.price_subtotal"
+                                          t-options="{'widget':'monetary','display_currency':o.currency_id}"/>
+                                </td>
                             </tr>
-                        </thead>
-                        <tbody>
-                            <t t-foreach="o.order_line.filtered(lambda l: l.display_type or l.product_qty != 0)" t-as="line">
-                                <tr t-if="not line.display_type">
-                                    <td><span t-field="line.name" style="white-space:pre-line;"/></td>
-                                    <td class="amount"><span t-field="line.product_qty"/><br/><span t-field="line.product_uom_id"/></td>
-                                    <td class="amount"><span t-field="line.price_unit" t-options="{'widget':'monetary','display_currency':o.currency_id}"/></td>
-                                    <td class="amount"><span t-field="line.discount"/>%</td>
-                                    <td class="amount"><span t-out="', '.join(tax.tax_label for tax in line.tax_ids if tax.tax_label)"/></td>
-                                    <td class="amount"><span t-field="line.price_subtotal" t-options="{'widget':'monetary','display_currency':o.currency_id}"/></td>
-                                </tr>
-                                <tr t-elif="line.display_type in ('line_section','line_subsection')">
-                                    <td colspan="6"><strong t-field="line.name"/></td>
-                                </tr>
-                                <tr t-else=""><td colspan="6"><em t-field="line.name"/></td></tr>
-                            </t>
-                        </tbody>
+                            <tr t-elif="line.display_type in ('line_section', 'line_subsection')" class="fdc-section-line">
+                                <td colspan="6"><strong t-field="line.name"/></td>
+                            </tr>
+                            <tr t-else="">
+                                <td colspan="6"><em t-field="line.name"/></td>
+                            </tr>
+                        </t>
+                    </tbody>
+                </table>
+
+                <div class="fdc-total-area">
+                    <table class="fdc-totals">
+                        <t t-call="purchase.document_tax_totals">
+                            <t t-set="tax_totals" t-value="o.tax_totals"/>
+                            <t t-set="currency" t-value="o.currency_id"/>
+                        </t>
                     </table>
-
-                    <div style="width:38%; margin-left:auto; margin-top:4px;">
-                        <table class="muted-row">
-                            <t t-call="purchase.document_tax_totals">
-                                <t t-set="tax_totals" t-value="o.tax_totals"/>
-                                <t t-set="currency" t-value="o.currency_id"/>
-                            </t>
-                        </table>
-                    </div>
-                    <div t-if="o.note" style="margin-top:14px;"><strong>Notas:</strong><br/><span t-field="o.note"/></div>
-
-                    <div class="footer">
-                        <table><tr>
-                            <td style="width:33%;"><span t-esc="o.company_id.email or ''"/></td>
-                            <td style="width:34%; text-align:center;"><span t-esc="o.company_id.website or ''"/><br/>Página <span class="page"/> / <span class="topage"/></td>
-                            <td style="width:33%; text-align:right;"><span t-esc="o.company_id.phone or ''"/></td>
-                        </tr></table>
-                    </div>
                 </div>
-            </t>
+
+                <div t-if="o.note" class="fdc-notes">
+                    <span class="fdc-label">Notas:</span><br/>
+                    <span t-field="o.note"/>
+                </div>
+
+                <div class="fdc-footer">
+                    <table>
+                        <tr>
+                            <td>
+                                <div t-if="o.company_id.email"><span t-field="o.company_id.email"/></div>
+                                <div t-if="o.company_id.partner_id.email and o.company_id.partner_id.email != o.company_id.email">
+                                    <span t-field="o.company_id.partner_id.email"/>
+                                </div>
+                            </td>
+                            <td style="text-align:center;">
+                                <div t-if="o.company_id.website"><span t-field="o.company_id.website"/></div>
+                                <div>P&#225;gina <span class="page"/> / <span class="topage"/></div>
+                            </td>
+                            <td style="text-align:right;">
+                                <div t-if="o.company_id.phone"><span t-field="o.company_id.phone"/></div>
+                                <div t-if="o.company_id.mobile"><span t-field="o.company_id.mobile"/></div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
         </xpath>
     </template>
 </odoo>
