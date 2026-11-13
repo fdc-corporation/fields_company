@@ -1,517 +1,321 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-	<data>
-		<record id="paperformat_a4_guias" model="report.paperformat">
-			<field name="name">A4 - Guías</field>
-			<field name="default" eval="False" />
-			<field name="format">A4</field>
-			<field name="orientation">Portrait</field>
-			<field name="margin_top">7</field>
-			<field name="margin_bottom">12</field>
-			<field name="margin_left">5</field>
-			<field name="margin_right">5</field>
-			<field name="disable_shrinking" eval="True" />
-			<field name="dpi">90</field>
-		</record>
-		<record id="action_reporte_guias" model="ir.actions.report">
-			<field name="name">Guia Electronica</field>
-			<field name="model">stock.picking</field>
-			<field name="report_type">qweb-pdf</field>
-			<field name="report_name">fields_company.report_guias</field>
-			<field name="report_file">fields_company.report_guias</field>
-			<field name="binding_model_id" ref="stock.model_stock_picking" />
-			<field name="binding_type">report</field>
-			<field name="print_report_name">'Guia - %s' % (object.partner_id.name)</field>
-			<field name="paperformat_id" ref="fields_company.paperformat_a4_guias" />
-		</record>
-		<template id="report_guias">
-			<t t-name="web.basic_layout">
-				<t t-foreach="docs" t-as="doc">
-					<t t-call="web.html_container">
-						<t t-if="not o" t-set="o" t-value="doc" />
-						<t t-set="o" t-value="o.with_context(lang=lang)" />
-						<div class="article fdc-report-compact" style="font-family:Arial, sans-serif; font-size:9px; line-height:1.18;" t-att-data-oe-model="o and o._name" t-att-data-oe-id="o and o.id" t-att-data-oe-lang="o and o.env.context.get('lang')">
-							<style>.fdc-report-compact div,.fdc-report-compact span,.fdc-report-compact p{font-size:9px!important;line-height:1.18!important}.fdc-report-compact table{font-size:9px!important}.fdc-report-compact td,.fdc-report-compact th{padding:3px 5px!important}.fdc-report-compact p{margin-bottom:2px}</style>
-							<!--
-							Header
-							<div class="header o_company_#{company.id}_layout factura" t-att-style="report_header_style">
-							-->
-							<!-- Body -->
-							<div class="" style="font-family: Monaco; font-size: 13px;">
-								<div class="" style="font-family: Monaco; font-size: 16px;">
-									<div class="row">
-										<div class="col-4 col-xs-4 ">
-											<img t-if="o.company_id.logo" t-att-src="image_data_uri(o.company_id.logo)" style="width:220px;top: 30%;" alt="Logo" />
-										</div>
-										<div class="col-4 empresa text-center" name="company_address">
-											<strong style="font-size:14px;">
-												<t t-esc="o.company_id.name" />
-											</strong>
-											<br />
-											<span style="font-size:13px;" t-esc="o.company_id.street" />
-											<br />
-											<span style="font-size:13px;" t-esc="o.company_id.partner_id.l10n_pe_district.name" />
-											-
-											<span style="font-size:13px;" t-esc="o.company_id.state_id.name" />
-											-
-											<span style="font-size:13px;" t-esc="o.company_id.city" />
-											<br />
-											<span style="font-size:13px;" t-if="o.company_id.phone">
-												Telf.:
-												<t t-esc="o.company_id.phone" />
-											</span>
-										</div>
-										<div class="col-4 text-right">
-											<div class="text-center" style="margin: 0px auto;padding:15px 20px;border-radius:10px;border: 1px solid #ddd !important;font-size: 16px;width: max-content;">
-												RUC:
-												<t t-esc="o.company_id.vat" />
-												<br />
-												<span style="font-size:13px;">
-													GUÍA DE REMISIÓN ELECTRÓNICA
-													<br />
-												</span>
-												<t t-if="o.l10n_latam_document_number" t-esc="o.l10n_latam_document_number" />
-												<t t-else="" t-esc="o.name" />
-											</div>
-										</div>
-									</div>
-								</div>
-								<br>
-									<br />
-								</br>
-								<table class="table" style="width:100%;font-size: 15px;border:0px;margin-top:-30px;">
-									<thead style="border:0px;">
-										<tr style="border:0px; background-color:#22629D;">
-											<td class="text-left pl-2" style="border:0px;color:white;font-size:15px;text-align: left;border-left:2px solid white;">
-												<b>
-													Dirección de llegada
-												</b>
-											</td>
-											<td class="text-left pl-2" style="border:0px;color:white;font-size:15px;text-align: left;border-left:2px solid white;">
-												<b>
-													Dirección de partida
-												</b>
-											</td>
-										</tr>
-									</thead>
-									<tbody style="border:0px;">
-										<tr style="border:0px;">
-											<t t-if="o.picking_type_id.name =='Traslados internos'">
-												<td style="border:0px;width: 50%;font-size:15px;">
-													<t t-esc="o.location_dest_id.warehouse_id.partner_id.street or ''" />
-													,
-													<t t-esc="o.location_dest_id.warehouse_id.partner_id.l10n_pe_district.name or ''" />
-													,
-													<t t-esc="o.location_dest_id.warehouse_id.partner_id.city_id.name or ''" />
-													,
-													<t t-esc="o.location_dest_id.warehouse_id.partner_id.state_id.name or ''" />
-													<t t-esc="o.partner_id.country_id.name or ''" />
-													<br />
-													<strong>
-														Fecha de entrega:
-													</strong>
-													<span t-esc="o.scheduled_date.strftime('%Y-%m-%d')" />
-													<br />
-													<strong>
-														Fecha de emisión:
-													</strong>
-													<span t-esc="o.date_done.strftime('%Y-%m-%d') if o.date_done else ''" />
-												</td>
-											</t>
-											<t t-else="">
-												<td style="border:0px;width: 50%;font-size:15px;">
-													<t t-if="o.picking_type_id.name =='Órdenes de PdV' or o.picking_type_id.name =='Órdenes de entrega' ">
-														<t t-esc="o.partner_id.street or ''" />
-														<t t-esc="o.partner_id.l10n_pe_district.name or ''" />
-														,
-														<t t-esc="o.partner_id.city_id.name or ''" />
-														,
-														<t t-esc="o.partner_id.state_id.name or ''" />
-														,
-														<t t-esc="o.partner_id.country_id.name or ''" />
-													</t>
-													<t t-else="">
-														<t t-esc="o.picking_type_id.warehouse_id.partner_id.street or ''" />
-														,
-														<t t-esc="o.picking_type_id.warehouse_id.partner_id.l10n_pe_district.name or ''" />
-														,
-														<t t-esc="o.picking_type_id.warehouse_id.partner_id.city_id.name or ''" />
-														,
-														<t t-esc="o.picking_type_id.warehouse_id.partner_id.state_id.name or ''" />
-														<t t-esc="o.partner_id.country_id.name or ''" />
-													</t>
-													<br />
-													<strong>
-														Fecha de entrega:
-													</strong>
-													<span t-esc="o.scheduled_date.strftime('%Y-%m-%d')" />
-													<br />
-													<strong>
-														Fecha de emisión:
-													</strong>
-													<span t-esc="o.date_done.strftime('%Y-%m-%d') if o.date_done else ''" />
-												</td>
-											</t>
-											<td style="border:0px;font-size:15px;">
-												<t t-if="o.picking_type_id.name =='Órdenes de PdV' or o.picking_type_id.name =='Órdenes de entrega'">
-													<t t-esc="o.picking_type_id.warehouse_id.partner_id.street or ''" />
-													,
-													<t t-esc="o.picking_type_id.warehouse_id.partner_id.l10n_pe_district.name or ''" />
-													,
-													<t t-esc="o.picking_type_id.warehouse_id.partner_id.city_id.name or ''" />
-													,
-													<t t-esc="o.picking_type_id.warehouse_id.partner_id.state_id.name or ''" />
-													<t t-esc="o.partner_id.country_id.name or ''" />
-												</t>
-												<t t-else="">
-													<t t-esc="o.partner_id.street or ''" />
-													<t t-esc="o.partner_id.l10n_pe_district.name or ''" />
-													,
-													<t t-esc="o.partner_id.city_id.name or ''" />
-													,
-													<t t-esc="o.partner_id.state_id.name or ''" />
-													,
-													<t t-esc="o.partner_id.country_id.name or ''" />
-												</t>
-											</td>
-										</tr>
-									</tbody>
-								</table>
-								<table class="table" style="width:100%;font-size: 15px;border:0px;">
-									<thead style="border:0px;">
-										<tr style="border:0px; background-color:#22629D;">
-											<td class="text-left pl-2" style="border:0px;color:white;font-size:13px;text-align: left;border-left:2px solid white;">
-												<b>
-													Remitente
-												</b>
-											</td>
-											<td class="text-left pl-2" style="border:0px;color:white;font-size:13px;text-align: left;border-left:2px solid white;">
-												<b>
-													Destinatario
-												</b>
-											</td>
-										</tr>
-									</thead>
-									<tbody style="border:0px;">
-										<tr style="border:0px;">
-											<td style="border:0px;width: 50%;font-size:15px;">
-												<t t-esc="o.company_id.name" />
-												<br />
-												<strong>
-													RUC
-												</strong>
-												:
-												<span t-esc="o.company_id.vat" />
-											</td>
-											<td style="border:0px;font-size:15px;">
-												<t t-if="o.partner_id.parent_id">
-													<span t-esc="o.partner_id.parent_id.name" />
-													-
-													<span t-esc="o.partner_id.name" />
-													<br />
-													<strong>
-														RUC
-													</strong>
-													:
-													<span t-esc="o.partner_id.vat" />
-												</t>
-												<t t-else="">
-													<span t-esc="o.partner_id.name" />
-													<br />
-													<strong>
-														RUC
-													</strong>
-													:
-													<span t-esc="o.partner_id.vat" />
-												</t>
-											</td>
-										</tr>
-									</tbody>
-								</table>
-								<table class="table" style="width:100%;font-size: 14px;border:0px;">
-									<!-- <t t-set="has_serial_number" t-value="False"/> -->
-									<!-- <t t-set="has_serial_number" t-value="o.move_line_ids.mapped('lot_id')"/> -->
-									<thead style="border:0px;">
-										<tr style="border:0px;background:white;color:white;">
-											<!-- <td style="border:0px;"> -->
-											<!-- <strong>CODBAR</strong> -->
-											<!-- </td> -->
-											<td style="border:0px;color:black;">
-												<strong>
-													DESCRIPCION
-												</strong>
-											</td>
-											<!-- <td style="border:0px;"> -->
-											<!-- <strong>LOTE/SERIE</strong> -->
-											<!-- </td> -->
-											<td style="border:0px;color:black;">
-												<strong>
-													CANTIDAD
-												</strong>
-											</td>
-											<td style="border:0px;color:black;">
-												<strong>
-													MEDIDA
-												</strong>
-											</td>
-										</tr>
-									</thead>
-									<tbody style="border:0px;">
-										<!-- Obtener productos únicos en líneas de movimiento -->
-										<!-- <t t-set="products" t-value="o.move_line_ids.mapped('product_id').filtered(lambda p: p)"/> -->
-										<t t-foreach="o.move_ids" t-as="product">
-											<tr style="border:0px;">
-												<td style="border:0px;">
-													<span t-esc="product.product_id.name" />
-													<br />
-													<span t-field="product.description_picking" />
-												</td>
-												<td style="border:0px;">
-													<span t-esc="product.quantity" />
-												</td>
-												<td style="border:0px;">
-													<span t-esc="product.product_uom.name" />
-												</td>
-											</tr>
-										</t>
-									</tbody>
-								</table>
-								<br />
-								<table class="table" style="width:100%;font-size: 15px;border:0px;">
-									<thead style="border:0px;">
-										<tr style="border:0px; background-color:#22629D;">
-											<td class="text-left pl-2" style="border:0px;color:white;font-size:15px;text-align: left;border-left:2px solid white;">
-												<b>
-													Transportista
-												</b>
-											</td>
-											<td class="text-left pl-2" style="border:0px;color:white;font-size:15px;text-align: left;border-left:2px solid white;">
-												<b>
-													Datos del transporte
-												</b>
-											</td>
-										</tr>
-									</thead>
-									<tbody style="border:0px;">
-										<tr style="border:0px;">
-											<td style="border:0px;width: 50%;">
-												<table class="table" style="border:0px;font-size:15px;">
-													<tbody style="border:0px;">
-														<t t-if="not o.l10n_pe_edi_transport_type == '01'">
-															<tr style="border:0px;">
-																<td style="border:0px;padding: 2px;">
-																	Empresa
-																</td>
-																<td style="border:0px;padding: 2px;">
-																	:
-																</td>
-																<td style="border:0px;padding: 2px;">
-																	<span t-esc="o.company_id.name" />
-																</td>
-															</tr>
-															<tr style="border:0px;">
-																<td style="border:0px;padding: 2px;">
-																	RUC
-																</td>
-																<td style="border:0px;padding: 2px;">
-																	:
-																</td>
-																<td style="border:0px;padding: 2px;">
-																	<span t-esc="o.company_id.vat" />
-																</td>
-															</tr>
-															<tr style="border:0px;">
-																<td style="border:0px;padding: 2px;">
-																	Conductor
-																</td>
-																<td style="border:0px;padding: 2px;">
-																	:
-																</td>
-																<td style="border:0px;padding: 2px;">
-																	<span t-esc="o.l10n_pe_edi_operator_id.name" />
-																</td>
-															</tr>
-															<tr style="border:0px;">
-																<td style="border:0px;padding: 2px;">
-																	DNI del conductor
-																</td>
-																<td style="border:0px;padding: 2px;">
-																	:
-																</td>
-																<td style="border:0px;padding: 2px;">
-																	<span t-esc="o.l10n_pe_edi_operator_id.vat" />
-																</td>
-															</tr>
-															<tr style="border:0px;">
-																<td style="border:0px;padding: 2px;">
-																	N° de licencia
-																</td>
-																<td style="border:0px;padding: 2px;">
-																	:
-																</td>
-																<td style="border:0px;padding: 2px;">
-																	<span t-esc="o.l10n_pe_edi_operator_id.l10n_pe_edi_operator_license" />
-																</td>
-															</tr>
-														</t>
-													</tbody>
-												</table>
-											</td>
-											<td style="border:0px;">
-												<table class="table" style="border:0px;font-size:15px;">
-													<tbody style="border:0px;">
-														<t t-if="not o.l10n_pe_edi_transport_type == '01'">
-															<!-- <t t-foreach="o.pe_fleet_ids" t-as="fleet_id"> -->
-															<tr style="border:0px;">
-																<td style="border:0px;padding: 2px;">
-																	Marca del vehículo
-																</td>
-																<td style="border:0px;padding: 2px;">
-																	:
-																</td>
-																<td style="border:0px;padding: 2px;">
-																	<span t-esc="o.l10n_pe_edi_vehicle_id.name" />
-																</td>
-															</tr>
-															<tr style="border:0px;">
-																<td style="border:0px;padding: 2px;">
-																	N° de placa
-																</td>
-																<td style="border:0px;padding: 2px;">
-																	:
-																</td>
-																<td style="border:0px;padding: 2px;">
-																	<span t-esc="o.l10n_pe_edi_vehicle_id.license_plate" />
-																</td>
-															</tr>
-															<tr>
-																<td colspan="3" style="border:0px;padding: 2px;">
-																	<b>
-																		Comentarios:
-																	</b>
-																	<span t-esc="o.l10n_pe_edi_observation" />
-																</td>
-															</tr>
-														</t>
-														<t t-else="">
-															<tr style="border:0px;">
-																<td style="border:0px;padding: 2px;">
-																	Empresa del transporte
-																</td>
-																<td style="border:0px;padding: 2px;">
-																	:
-																</td>
-																<td style="border:0px;padding: 2px;">
-																	<span t-esc="o.l10n_pe_edi_operator_id.name" />
-																</td>
-															</tr>
-															<tr style="border:0px;">
-																<td style="border:0px;padding: 2px;">
-																	RUC
-																</td>
-																<td style="border:0px;padding: 2px;">
-																	:
-																</td>
-																<td style="border:0px;padding: 2px;">
-																	<span t-esc="o.l10n_pe_edi_operator_id.vat" />
-																</td>
-															</tr>
-															<tr style="border:0px;">
-																<td colspan="3" style="border:0px;padding: 2px;">
-																	<b>
-																		Comentarios:
-																	</b>
-																	<span t-esc="o.l10n_pe_edi_observation" />
-																</td>
-															</tr>
-														</t>
-													</tbody>
-												</table>
-											</td>
-										</tr>
-									</tbody>
-								</table>
-								<table class="table" style="width:100%;font-size: 15px;border:0px;">
-									<tbody style="border:0px;">
-										<tr style="border:0px; background-color:#22629D;">
-											<td class="text-left pl-2" style="border:0px;color:white;font-size:15px;text-align: left;border-left:2px solid white;">
-												<b>
-													Motivo de transporte
-												</b>
-											</td>
-											<td class="text-left pl-2" style="border:0px;color:white;font-size:15px;text-align: left;border-left:2px solid white;">
-												<b>
-													Carga
-												</b>
-											</td>
-										</tr>
-									</tbody>
-									<tbody style="border:0px;">
-										<tr style="border:0px;">
-											<td class="text-left" style="border:0px;width:50%;">
-												<t t-if="o.l10n_pe_edi_reason_for_transfer != '13'">
-													<strong>
-														Motivo de traslado:
-													</strong>
-													<span t-field="o.l10n_pe_edi_reason_for_transfer" />
-												</t>
-												<br />
-												<strong>
-													OC:
-												</strong>
-												<span t-esc="doc.oc_id.oc" />
-											</td>
-											<td class="text-left" style="border:0px;width:50%;">
-												<strong style="margin-left: 15px;">
-													Peso bruto:
-												</strong>
-												<span t-esc="o.shipping_weight" style="overflow-wrap: break-word;" />
-												Kg
-												<br />
-											</td>
-										</tr>
-									</tbody>
-								</table>
-								<!-- <div class="container-fluid"> -->
-								<!-- <div class="row"> -->
-								<!-- <div style="width: 150px;"> -->
-								<!-- <img t-if="o.sunat_qr_code" t-att-src="image_data_uri(o.sunat_qr_code)" alt="Código QR" style="width: 140px; height: 140px;"/> -->
-								<!-- </div> -->
-								<!-- <div class="col-4"> -->
-								<table class="table" style="width:100%;font-size: 15px;border:0px;">
-									<tbody style="border:0px;">
-										<tr style="border:0px; background-color:#22629D;">
-											<td colspan="2" class="text-left pl-2" style="border:0px;color:white;font-size:13px;text-align: left;border-left:2px solid white;">
-												<b>
-													Más información
-												</b>
-											</td>
-										</tr>
-										<tr style="border:0px;">
-											<!-- QR -->
-											<td class="text-left" style="border:0px;width: 140px;">
-												<t t-set="qr_url" t-value="o._l10n_pe_edi_get_qr()" />
-												<div t-if="qr_url" class="barcode col-3">
-													<img alt="Código de barras" t-att-src="'/report/barcode/?barcode_type=QR&amp;value=%s&amp;width=180&amp;height=180&amp;quiet=0' % quote_plus(qr_url)" />
-												</div>
-											</td>
-											<!-- Detalle de comprobantes -->
-											<td class="text-left" style="border:0px;">
-												<div t-if="o.qr_guia" class="barcode col-3">
-													<img t-if="o.qr_guia" t-att-src="image_data_uri(o.qr_guia)" style="width:100px; height:100px;" alt="QR" />
-												</div>
-											</td>
-										</tr>
-									</tbody>
-								</table>
-								<!-- </div> -->
-								<!-- </div> -->
-								<!-- </div> -->
-							</div>
-						</div>
-					</t>
-				</t>
-			</t>
-		</template>
-	</data>
+    <data>
+        <record id="paperformat_a4_guias" model="report.paperformat">
+            <field name="name">FDC Guia A4</field>
+            <field name="default" eval="False"/>
+            <field name="format">A4</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">0</field>
+            <field name="margin_bottom">0</field>
+            <field name="margin_left">0</field>
+            <field name="margin_right">0</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">0</field>
+            <field name="disable_shrinking" eval="False"/>
+            <field name="dpi">90</field>
+        </record>
+
+        <record id="action_reporte_guias" model="ir.actions.report">
+            <field name="name">Guia Electronica</field>
+            <field name="model">stock.picking</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">fields_company.report_guias</field>
+            <field name="report_file">fields_company.report_guias</field>
+            <field name="binding_model_id" ref="stock.model_stock_picking"/>
+            <field name="binding_type">report</field>
+            <field name="print_report_name">'Guia - %s' % (object.partner_id.name)</field>
+            <field name="paperformat_id" ref="fields_company.paperformat_a4_guias"/>
+        </record>
+
+        <template id="report_guias">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <meta charset="utf-8"/>
+                    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+                    <t t-set="source_partner" t-value="o.picking_type_id.warehouse_id.partner_id or o.company_id.partner_id"/>
+                    <t t-set="destination_partner" t-value="o.partner_id"/>
+                    <t t-if="o.picking_type_id.code == 'internal' and o.location_dest_id.warehouse_id">
+                        <t t-set="destination_partner" t-value="o.location_dest_id.warehouse_id.partner_id"/>
+                    </t>
+
+                    <div class="page fdc-guide">
+                        <style>
+                            .fdc-guide {
+                                position: relative;
+                                min-height: 297mm;
+                                padding: 0 5mm 10mm;
+                                color: #080808;
+                                font-family: Arial, 'DejaVu Sans', sans-serif;
+                                font-size: 7px;
+                                line-height: 1.18;
+                            }
+                            .fdc-guide * { box-sizing: border-box; }
+                            .fdc-guide table { width: 100%; border-collapse: collapse; }
+                            .fdc-guide .guide-header { height: 23mm; margin: 0 -5mm 2mm; }
+                            .fdc-guide .color-line { display: block; width: 100%; height: 2mm; object-fit: fill; }
+                            .fdc-guide .header-table { width: calc(100% - 10mm); margin: 2mm 5mm 0; table-layout: fixed; }
+                            .fdc-guide .header-table td { padding: 0 1.5mm; border: 0; vertical-align: top; }
+                            .fdc-guide .company-logo { max-width: 34mm; max-height: 17mm; object-fit: contain; }
+                            .fdc-guide .header-qr { width: 14mm; height: 14mm; object-fit: contain; }
+                            .fdc-guide .company-data { text-align: center; font-size: 6.5px; line-height: 1.12; }
+                            .fdc-guide .company-data strong { font-size: 7.5px; }
+                            .fdc-guide .document-data { text-align: center; font-size: 6.5px; }
+                            .fdc-guide .document-title {
+                                padding: 1.5mm 1mm;
+                                margin-bottom: 1.5mm;
+                                background: #e9f1f4;
+                                font-size: 8px;
+                                font-weight: 700;
+                            }
+                            .fdc-guide .section { margin-bottom: 2mm; table-layout: fixed; }
+                            .fdc-guide .section-title td,
+                            .fdc-guide .single-title {
+                                padding: 1.1mm 2mm;
+                                background: #f0f3f5;
+                                font-size: 7.5px;
+                                font-weight: 700;
+                                text-transform: uppercase;
+                            }
+                            .fdc-guide .section-body td { padding: 1.2mm 2mm; vertical-align: top; }
+                            .fdc-guide .label { font-weight: 700; }
+                            .fdc-guide .moves { margin-bottom: 2mm; table-layout: fixed; }
+                            .fdc-guide .moves th {
+                                padding: 1mm 2mm;
+                                background: #f0f3f5;
+                                font-size: 7.5px;
+                                text-align: left;
+                            }
+                            .fdc-guide .moves td { padding: 1mm 2mm; vertical-align: top; }
+                            .fdc-guide .moves tbody tr:nth-child(even) { background: #fafafa; }
+                            .fdc-guide .center { text-align: center; }
+                            .fdc-guide .transport-grid { table-layout: fixed; }
+                            .fdc-guide .transport-grid > tbody > tr > td {
+                                width: 50%;
+                                padding: 1.2mm 2mm;
+                                vertical-align: top;
+                            }
+                            .fdc-guide .detail-table td { padding: 0.45mm 0; border: 0; }
+                            .fdc-guide .detail-table td:first-child { width: 28mm; font-weight: 700; }
+                            .fdc-guide .detail-table td:nth-child(2) { width: 4mm; }
+                            .fdc-guide .comment-box {
+                                min-height: 6mm;
+                                margin-top: 1mm;
+                                padding: 1mm;
+                                border: 0.3mm solid #555;
+                            }
+                            .fdc-guide .bottom-qr { width: 29mm; height: 29mm; object-fit: contain; }
+                        </style>
+
+                        <div class="guide-header">
+                            <img t-if="o.report_top_line" class="color-line"
+                                 t-att-src="image_data_uri(o.report_top_line)" alt=""/>
+                            <table class="header-table">
+                                <colgroup>
+                                    <col style="width:17%;"/>
+                                    <col style="width:10%;"/>
+                                    <col style="width:43%;"/>
+                                    <col style="width:30%;"/>
+                                </colgroup>
+                                <tr>
+                                    <td>
+                                        <img t-if="o.company_id.logo" class="company-logo"
+                                             t-att-src="image_data_uri(o.company_id.logo)" alt="Logo"/>
+                                    </td>
+                                    <td>
+                                        <img t-if="o.qr_guia" class="header-qr"
+                                             t-att-src="image_data_uri(o.qr_guia)" alt="QR guia"/>
+                                    </td>
+                                    <td class="company-data">
+                                        <strong><span t-field="o.company_id.name"/></strong><br/>
+                                        <span t-field="o.company_id.street"/><br/>
+                                        <span t-field="o.company_id.city"/>
+                                        <t t-if="o.company_id.state_id"> - <span t-field="o.company_id.state_id"/></t><br/>
+                                        <span t-if="o.company_id.phone">Telf.: <span t-field="o.company_id.phone"/></span>
+                                    </td>
+                                    <td class="document-data">
+                                        <div class="document-title">Guia de Remision Electronica</div>
+                                        <div><span class="label">RUC: </span><span t-field="o.company_id.vat"/></div>
+                                        <div style="margin-top:1mm; font-weight:700;">
+                                            <span t-if="o.l10n_latam_document_number" t-field="o.l10n_latam_document_number"/>
+                                            <span t-else="" t-field="o.name"/>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <table class="section">
+                            <tr class="section-title">
+                                <td style="width:50%;">Direccion de llegada</td>
+                                <td style="width:50%;">Direccion de envio</td>
+                            </tr>
+                            <tr class="section-body">
+                                <td>
+                                    <span t-field="destination_partner.street"/>
+                                    <t t-if="destination_partner.street2">, <span t-field="destination_partner.street2"/></t>
+                                    <t t-if="destination_partner.city">, <span t-field="destination_partner.city"/></t>
+                                    <t t-if="destination_partner.state_id">, <span t-field="destination_partner.state_id"/></t>
+                                    <t t-if="destination_partner.country_id">, <span t-field="destination_partner.country_id"/></t>
+                                    <div style="margin-top:1mm;">
+                                        <span class="label">Fecha de entrega: </span>
+                                        <span t-if="o.date_done" t-field="o.date_done" t-options="{'widget':'date'}"/>
+                                    </div>
+                                    <div>
+                                        <span class="label">Fecha de emision: </span>
+                                        <span t-if="o.l10n_pe_edi_departure_start_date"
+                                              t-field="o.l10n_pe_edi_departure_start_date"
+                                              t-options="{'widget':'date'}"/>
+                                    </div>
+                                </td>
+                                <td>
+                                    <span t-field="source_partner.street"/>
+                                    <t t-if="source_partner.street2">, <span t-field="source_partner.street2"/></t>
+                                    <t t-if="source_partner.city">, <span t-field="source_partner.city"/></t>
+                                    <t t-if="source_partner.state_id">, <span t-field="source_partner.state_id"/></t>
+                                    <t t-if="source_partner.country_id">, <span t-field="source_partner.country_id"/></t>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <table class="section">
+                            <tr class="section-title">
+                                <td style="width:50%;">Remitente</td>
+                                <td style="width:50%;">Destinatario</td>
+                            </tr>
+                            <tr class="section-body">
+                                <td>
+                                    <span t-field="o.company_id.name"/><br/>
+                                    <span class="label">RUC: </span><span t-field="o.company_id.vat"/>
+                                </td>
+                                <td>
+                                    <t t-if="o.partner_id.parent_id">
+                                        <span t-field="o.partner_id.parent_id.name"/> - <span t-field="o.partner_id.name"/>
+                                    </t>
+                                    <span t-else="" t-field="o.partner_id.name"/><br/>
+                                    <span class="label">RUC: </span><span t-field="o.partner_id.vat"/>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <table class="moves">
+                            <colgroup>
+                                <col style="width:62%;"/>
+                                <col style="width:12%;"/>
+                                <col style="width:13%;"/>
+                                <col style="width:13%;"/>
+                            </colgroup>
+                            <thead>
+                                <tr>
+                                    <th>Descripcion</th>
+                                    <th>Nota</th>
+                                    <th class="center">Cantidad</th>
+                                    <th class="center">Medida</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr t-foreach="o.move_ids" t-as="move">
+                                    <td>
+                                        <span t-field="move.product_id.name"/><br/>
+                                        <span t-if="move.description_picking" t-field="move.description_picking"/>
+                                    </td>
+                                    <td><span t-if="move.nota" t-field="move.nota"/></td>
+                                    <td class="center"><span t-field="move.quantity"/></td>
+                                    <td class="center"><span t-field="move.product_uom"/></td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <table class="section transport-grid">
+                            <tr class="section-title">
+                                <td>Transportista</td>
+                                <td>Datos del transporte</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <table class="detail-table">
+                                        <tr>
+                                            <td>Empresa</td><td>:</td>
+                                            <td>
+                                                <span t-if="o.l10n_pe_edi_transport_type == '01' and o.l10n_pe_edi_operator_id"
+                                                      t-field="o.l10n_pe_edi_operator_id.name"/>
+                                                <span t-else="" t-field="o.company_id.name"/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>RUC</td><td>:</td>
+                                            <td>
+                                                <span t-if="o.l10n_pe_edi_transport_type == '01' and o.l10n_pe_edi_operator_id"
+                                                      t-field="o.l10n_pe_edi_operator_id.vat"/>
+                                                <span t-else="" t-field="o.company_id.vat"/>
+                                            </td>
+                                        </tr>
+                                        <tr t-if="o.l10n_pe_edi_operator_id">
+                                            <td>Conductor</td><td>:</td><td><span t-field="o.l10n_pe_edi_operator_id.name"/></td>
+                                        </tr>
+                                        <tr t-if="o.l10n_pe_edi_operator_id">
+                                            <td>DNI del conductor</td><td>:</td><td><span t-field="o.l10n_pe_edi_operator_id.vat"/></td>
+                                        </tr>
+                                        <tr t-if="o.l10n_pe_edi_operator_id">
+                                            <td>Nro. de licencia</td><td>:</td>
+                                            <td><span t-field="o.l10n_pe_edi_operator_id.l10n_pe_edi_operator_license"/></td>
+                                        </tr>
+                                    </table>
+                                </td>
+                                <td>
+                                    <table class="detail-table">
+                                        <tr t-if="o.l10n_pe_edi_transport_type">
+                                            <td>Modalidad</td><td>:</td><td><span t-field="o.l10n_pe_edi_transport_type"/></td>
+                                        </tr>
+                                        <tr t-if="o.l10n_pe_edi_vehicle_id">
+                                            <td>Marca del vehiculo</td><td>:</td><td><span t-field="o.l10n_pe_edi_vehicle_id.name"/></td>
+                                        </tr>
+                                        <tr t-if="o.l10n_pe_edi_vehicle_id">
+                                            <td>Nro. de placa</td><td>:</td><td><span t-field="o.l10n_pe_edi_vehicle_id.license_plate"/></td>
+                                        </tr>
+                                    </table>
+                                    <div class="comment-box">
+                                        <span class="label">Comentarios: </span>
+                                        <span t-if="o.l10n_pe_edi_observation" t-field="o.l10n_pe_edi_observation"/>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <table class="section">
+                            <tr class="section-title">
+                                <td style="width:50%;">Remitente</td>
+                                <td style="width:50%;">Destinatario</td>
+                            </tr>
+                            <tr class="section-body">
+                                <td>
+                                    <span class="label">Motivo de traslado: </span>
+                                    <span t-if="o.l10n_pe_edi_reason_for_transfer"
+                                          t-field="o.l10n_pe_edi_reason_for_transfer"/><br/>
+                                    <span class="label">OC: </span>
+                                    <span t-if="o.oc_id" t-field="o.oc_id.oc"/>
+                                </td>
+                                <td>
+                                    <span class="label">Peso bruto: </span>
+                                    <span t-esc="o.shipping_weight or o.weight or 0.0"/> Kg.
+                                </td>
+                            </tr>
+                        </table>
+
+                        <table class="section">
+                            <tr><td class="single-title">Mas informacion</td></tr>
+                            <tr class="section-body">
+                                <td>
+                                    <t t-set="qr_url" t-value="o._l10n_pe_edi_get_qr()"/>
+                                    <img t-if="qr_url" class="bottom-qr"
+                                         t-att-src="'/report/barcode/?barcode_type=QR&amp;value=%s&amp;width=220&amp;height=220&amp;quiet=0' % quote_plus(qr_url)"
+                                         alt="QR SUNAT"/>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </t>
+            </t>
+        </template>
+    </data>
 </odoo>
