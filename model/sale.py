@@ -1,4 +1,7 @@
+import base64
+
 from odoo import models, fields, api
+from odoo.tools import file_open
 
 
 class SaleOrder(models.Model):
@@ -32,6 +35,27 @@ class SaleOrder(models.Model):
     )
     partner_id = fields.Many2one(domain="[('parent_id', '==', False)]")
     partner_shipping_id = fields.Many2one(domain="[('parent_id', '==', partner_id)]")
+    report_top_line = fields.Binary(compute='_compute_report_assets')
+    report_logo_storage = fields.Binary(compute='_compute_report_assets')
+    report_logo_chicago = fields.Binary(compute='_compute_report_assets')
+    report_logo_pneumatech = fields.Binary(compute='_compute_report_assets')
+
+    def _compute_report_assets(self):
+        asset_files = {
+            'report_top_line': 'fdc-top-line.png',
+            'report_logo_storage': 'storage-compat.png',
+            'report_logo_chicago': 'chicago-pneumatic.png',
+            'report_logo_pneumatech': 'pneumatech.png',
+        }
+        values = {}
+        for field_name, filename in asset_files.items():
+            with file_open(
+                f'fields_company/static/src/img/report/{filename}', 'rb'
+            ) as asset:
+                values[field_name] = base64.b64encode(asset.read())
+        for record in self:
+            for field_name, value in values.items():
+                record[field_name] = value
 
     @api.model
     def create(self, vals):

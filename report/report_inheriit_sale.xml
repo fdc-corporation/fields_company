@@ -21,12 +21,13 @@
 						.fdc-sale-report #informations strong{font-size:8px}.fdc-sale-report h5{font-size:9px!important;text-align:left!important;background:#f0f3f5;padding:1.8mm 2mm;margin:2mm 0 0!important}
 						.fdc-sale-report .o_main_table{width:100%!important;margin:0!important;border-bottom:0.3mm solid #222!important;table-layout:auto}.fdc-sale-report .o_main_table thead th{font-size:7.5px!important;border-bottom:0.3mm solid #222!important;white-space:nowrap}
 						.fdc-sale-report .o_main_table tbody tr:nth-child(odd){background:#f0f3f5}.fdc-sale-report .o_main_table tbody td{padding-top:1.5mm!important;padding-bottom:1.5mm!important;vertical-align:top}
-						.fdc-sale-report .o_main_table img{max-width:17mm!important;max-height:17mm!important;object-fit:contain}.fdc-sale-report .o_total_table{font-size:8px!important}.fdc-sale-report #total{width:38%!important;margin-left:auto!important;margin-right:0!important}
+						.fdc-sale-report .o_main_table img{max-width:17mm!important;max-height:17mm!important;object-fit:contain}.fdc-sale-report .o_total_table{font-size:8px!important}
+						.fdc-sale-report .fdc-totals-row{display:block;position:relative;width:100%!important;height:18mm;clear:both;overflow:visible}.fdc-sale-report .fdc-totals{position:absolute!important;top:0;right:0!important;float:none!important;width:38%!important;margin:0!important;padding:0!important}.fdc-sale-report .fdc-totals table{width:100%!important;margin:0!important}.fdc-sale-report .fdc-totals td{padding:1mm 1.5mm!important}.fdc-sale-report .fdc-totals td:last-child{text-align:right!important}
 						.fdc-sale-report .fdc-brand-strip{position:absolute;left:5mm;right:5mm;bottom:11mm;margin:0!important;height:11mm;background:#fff}.fdc-sale-report .fdc-brand-strip td{width:33.333%;height:11mm;text-align:center;vertical-align:middle;border:0!important}.fdc-sale-report .fdc-brand-strip img{width:auto!important;height:auto!important;max-width:36mm!important;max-height:10mm!important;object-fit:contain}
 						.fdc-sale-footer{position:absolute;left:0;right:0;bottom:0;height:8mm;border-top:0.3mm solid #222;padding-top:1mm;font-size:6.5px;background:#fff}.fdc-sale-footer table{width:100%;border:0!important}.fdc-sale-footer td{padding:0!important;border:0!important;width:33.333%}
 					</style>
 					<div class="fdc-sale-header">
-						<img class="color-line" src="/fields_company/static/src/img/report/fdc-top-line.png" alt=""/>
+						<img class="color-line" t-att-src="image_data_uri(doc.report_top_line)" alt=""/>
 						<table class="fdc-sale-header-table"><tr>
 							<td style="width:32%;"><img t-if="doc.company_id.logo" t-att-src="image_data_uri(doc.company_id.logo)" class="fdc-sale-logo" alt="Logo"/></td>
 							<td class="fdc-company" style="width:40%;"><strong t-field="doc.company_id.name"/><br/><span t-field="doc.company_id.street"/><br/><span t-esc="doc.company_id.city or ''"/> - <span t-esc="doc.company_id.zip or ''"/><br/><span t-field="doc.company_id.vat"/><br/><em>Ofrecemos Soluciones... Generamos Confianza</em></td>
@@ -305,18 +306,15 @@
 							</t>
 						</tbody>
 					</table>
-					<div class="clearfix" name="so_total_summary">
-						<div id="total" class="row mt-n3" name="total">
-							<div t-attf-class="#{'col-6' if report_type != 'html' else 'col-sm-7 col-md-6'} ms-auto">
-								<table class="o_total_table table table-borderless">
-									<!-- Tax totals -->
-									<t t-call="sale.document_tax_totals">
-										<t t-set="tax_totals" t-value="doc.tax_totals" />
-										<t t-set="currency" t-value="doc.currency_id" />
-									</t>
-								</table>
-							</div>
-						</div>
+					<div class="fdc-totals-row" name="so_total_summary">
+						<div class="fdc-totals" id="total" name="total">
+							<table class="o_total_table table table-borderless">
+								<t t-call="sale.document_tax_totals">
+									<t t-set="tax_totals" t-value="doc.tax_totals" />
+									<t t-set="currency" t-value="doc.currency_id" />
+								</t>
+							</table>
+					</div>
 					</div>
 					<div class="oe_structure" />
 					<div t-if="not doc.signature" class="oe_structure" />
@@ -471,9 +469,9 @@
 					</table>
 					<div class="fdc-brand-strip">
 						<table><tr>
-							<td><img src="/fields_company/static/src/img/report/storage-compat.png" alt="Storage Compat"/></td>
-							<td><img src="/fields_company/static/src/img/report/chicago-pneumatic.png" alt="Chicago Pneumatic"/></td>
-							<td><img src="/fields_company/static/src/img/report/pneumatech.png" alt="Pneumatech"/></td>
+							<td><img t-att-src="image_data_uri(doc.report_logo_storage)" alt="Storage Compat"/></td>
+							<td><img t-att-src="image_data_uri(doc.report_logo_chicago)" alt="Chicago Pneumatic"/></td>
+							<td><img t-att-src="image_data_uri(doc.report_logo_pneumatech)" alt="Pneumatech"/></td>
 						</tr></table>
 					</div>
 				</div>
