@@ -37,6 +37,7 @@
                     <t t-set="display_taxes" t-value="any(line.tax_ids for line in o.invoice_line_ids)"/>
                     <t t-set="lines_to_report" t-value="o._get_move_lines_to_report()"/>
                     <t t-set="extra_edi_vals" t-value="o._l10n_pe_edi_get_extra_report_values()"/>
+                    <t t-set="spot" t-value="o._l10n_pe_edi_get_spot()"/>
                     <t t-set="payment_term_details" t-value="o.payment_term_details"/>
 
                     <div class="page fdc-invoice">
@@ -122,8 +123,9 @@
                             .fdc-invoice .amount-words { margin-top: 1.5mm; font-size: 8px; text-align: center; }
                             .fdc-invoice .credit-box {
                                 margin-top: 4mm;
-                                padding: 2mm 3mm;
-                                background: #f0f3f5;
+                                padding: 3mm 4mm;
+                                border: 0.3mm solid #222;
+                                background: #fff;
                                 font-size: 9px;
                             }
                             .fdc-invoice .credit-box,
@@ -133,6 +135,28 @@
                             }
                             .fdc-invoice .credit-box table { width: 65%; margin-top: 1.5mm; }
                             .fdc-invoice .credit-box td { padding: 1mm 0; }
+                            .fdc-invoice .fiscal-box {
+                                margin-top: 3mm;
+                                padding: 3mm 4mm;
+                                border: 0.3mm solid #222;
+                                background: #fff;
+                                font-size: 9px;
+                            }
+                            .fdc-invoice .fiscal-box,
+                            .fdc-invoice .fiscal-box * {
+                                font-size: 9px !important;
+                                line-height: 1.2 !important;
+                            }
+                            .fdc-invoice .fiscal-box table { margin-top: 1.5mm; table-layout: fixed; }
+                            .fdc-invoice .fiscal-box td { padding: 1mm 1.5mm; vertical-align: top; }
+                            .fdc-invoice .installments { width: 100% !important; margin-top: 2mm !important; }
+                            .fdc-invoice .installments th,
+                            .fdc-invoice .installments td {
+                                padding: 0.9mm 1.5mm !important;
+                                border-top: 0.2mm solid #d6dadd;
+                                text-align: left;
+                            }
+                            .fdc-invoice .installments th { background: #f0f3f5; }
                         </style>
 
                         <div class="invoice-header">
@@ -301,8 +325,53 @@
                             </tr>
                         </table>
 
+                        <div t-if="o.tiene_retencion or spot" class="fiscal-box">
+                            <t t-if="o.tiene_retencion">
+                                <strong>Informacion de la retencion</strong>
+                                <table>
+                                    <tr>
+                                        <td>Base imponible de la retencion:</td>
+                                        <td>
+                                            <span t-field="o.amount_total"
+                                                  t-options="{'widget':'monetary','display_currency':o.currency_id}"/>
+                                        </td>
+                                        <td>Porcentaje de retencion:</td>
+                                        <td><span t-field="o.company_id.procentaje_retencion"/>%</td>
+                                        <td>Monto de la retencion:</td>
+                                        <td>
+                                            <span t-field="o.monto_retencion"
+                                                  t-options="{'widget':'monetary','display_currency':o.currency_id}"/>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </t>
+                            <t t-if="spot">
+                                <strong>Operacion sujeta al Sistema de Pago de Obligaciones Tributarias - SPOT</strong>
+                                <table>
+                                    <tr>
+                                        <td>Nro. Cta. Banco de la Nacion:</td>
+                                        <td><span t-out="spot.get('payee_financial_account') or ''"/></td>
+                                        <td>Porcentaje de detraccion:</td>
+                                        <td><span t-out="spot.get('payment_percent') or 0"/>%</td>
+                                        <td>Monto de detraccion:</td>
+                                        <td>
+                                            <span t-out="spot.get('amount') or 0.0"
+                                                  t-options="{'widget':'monetary','display_currency':spot.get('currency') or o.currency_id}"/>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </t>
+                        </div>
+
                         <div class="credit-box">
                             <strong>Informacion del credito:</strong>
+                            <t t-set="net_amount" t-value="o.amount_total"/>
+                            <t t-if="spot">
+                                <t t-set="net_amount" t-value="o.amount_total - (spot.get('amount') or 0.0)"/>
+                            </t>
+                            <t t-elif="o.tiene_retencion">
+                                <t t-set="net_amount" t-value="o.amount_total - (o.monto_retencion or 0.0)"/>
+                            </t>
                             <table>
                                 <tr>
                                     <td>Total de cuotas</td><td>:</td>
@@ -311,10 +380,29 @@
                                 <tr>
                                     <td>Monto neto pendiente de pago</td><td>:</td>
                                     <td>
-                                        <span t-field="o.amount_residual"
+                                        <span t-out="net_amount"
                                               t-options="{'widget':'monetary','display_currency':o.currency_id}"/>
                                     </td>
                                 </tr>
+                            </table>
+                            <table t-if="payment_term_details" class="installments">
+                                <thead>
+                                    <tr>
+                                        <th>Nro. de cuota</th>
+                                        <th>Fecha de vencimiento</th>
+                                        <th>Monto de la cuota</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr t-foreach="payment_term_details" t-as="term">
+                                        <td><span t-out="term_index + 1"/></td>
+                                        <td><span t-out="term.get('date')" t-options="{'widget':'date'}"/></td>
+                                        <td>
+                                            <span t-out="term.get('amount') or 0.0"
+                                                  t-options="{'widget':'monetary','display_currency':o.currency_id}"/>
+                                        </td>
+                                    </tr>
+                                </tbody>
                             </table>
                         </div>
                     </div>
