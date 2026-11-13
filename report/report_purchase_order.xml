@@ -147,6 +147,30 @@
                         background: #fff;
                     }
                     .fdc-purchase .fdc-footer td { width: 33.333%; padding: 0 !important; border: 0 !important; vertical-align: top; }
+                    .fdc-purchase .fdc-info,
+                    .fdc-purchase .fdc-info *,
+                    .fdc-purchase .fdc-meta,
+                    .fdc-purchase .fdc-meta *,
+                    .fdc-purchase .fdc-lines,
+                    .fdc-purchase .fdc-lines *,
+                    .fdc-purchase .fdc-total-area,
+                    .fdc-purchase .fdc-total-area *,
+                    .fdc-purchase .fdc-notes,
+                    .fdc-purchase .fdc-notes * {
+                        font-size: 10px !important;
+                        line-height: 1.2 !important;
+                    }
+                    .fdc-purchase .fdc-section-title,
+                    .fdc-purchase .fdc-lines thead th {
+                        font-size: 10.5px !important;
+                        line-height: 1.2 !important;
+                    }
+                    .fdc-purchase .fdc-total-area .fdc-totals td *,
+                    .fdc-purchase .fdc-total-area .fdc-totals strong,
+                    .fdc-purchase .fdc-total-area .fdc-totals span {
+                        font-size: 10px !important;
+                        line-height: 1.2 !important;
+                    }
                 </style>
 
                 <div class="fdc-header">

@@ -7,3 +7,4 @@ from . import res_partner
 from . import account_follow
 from . import producto
 from . import purchase
+from . import account_move

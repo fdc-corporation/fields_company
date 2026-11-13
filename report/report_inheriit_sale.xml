@@ -25,6 +25,9 @@
 						.fdc-sale-report .fdc-totals-row{display:block;position:relative;width:100%!important;height:18mm;clear:both;overflow:visible}.fdc-sale-report .fdc-totals{position:absolute!important;top:0;right:0!important;float:none!important;width:38%!important;margin:0!important;padding:0!important}.fdc-sale-report .fdc-totals table{width:100%!important;margin:0!important}.fdc-sale-report .fdc-totals td{padding:1mm 1.5mm!important}.fdc-sale-report .fdc-totals td:last-child{text-align:right!important}
 						.fdc-sale-report .fdc-brand-strip{position:absolute;left:5mm;right:5mm;bottom:11mm;margin:0!important;height:11mm;background:#fff}.fdc-sale-report .fdc-brand-strip td{width:33.333%;height:11mm;text-align:center;vertical-align:middle;border:0!important}.fdc-sale-report .fdc-brand-strip img{width:auto!important;height:auto!important;max-width:36mm!important;max-height:10mm!important;object-fit:contain}
 						.fdc-sale-footer{position:absolute;left:0;right:0;bottom:0;height:8mm;border-top:0.3mm solid #222;padding-top:1mm;font-size:6.5px;background:#fff}.fdc-sale-footer table{width:100%;border:0!important}.fdc-sale-footer td{padding:0!important;border:0!important;width:33.333%}
+						.fdc-sale-report{font-size:10px;line-height:1.2}
+						.fdc-sale-report #informations,.fdc-sale-report #informations *,.fdc-sale-report .o_main_table,.fdc-sale-report .o_main_table *,.fdc-sale-report .fdc-totals,.fdc-sale-report .fdc-totals *{font-size:10px!important;line-height:1.2!important}
+						.fdc-sale-report h5,.fdc-sale-report .o_main_table thead th{font-size:10.5px!important;line-height:1.2!important}
 					</style>
 					<div class="fdc-sale-header">
 						<img class="color-line" t-att-src="image_data_uri(doc.report_top_line)" alt=""/>
