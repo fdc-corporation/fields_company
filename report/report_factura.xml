@@ -126,6 +126,11 @@
                                 background: #f0f3f5;
                                 font-size: 9px;
                             }
+                            .fdc-invoice .credit-box,
+                            .fdc-invoice .credit-box * {
+                                font-size: 9px !important;
+                                line-height: 1.2 !important;
+                            }
                             .fdc-invoice .credit-box table { width: 65%; margin-top: 1.5mm; }
                             .fdc-invoice .credit-box td { padding: 1mm 0; }
                         </style>
@@ -260,8 +265,8 @@
                             </colgroup>
                             <tr>
                                 <td>
-                                    <img t-if="extra_edi_vals" class="invoice-qr"
-                                         t-att-src="'/report/barcode/?barcode_type=QR&amp;value=%s&amp;width=220&amp;height=220&amp;quiet=0' % quote_plus(extra_edi_vals['qr_str'])"
+                                    <img t-if="o.report_qr_sunat" class="invoice-qr"
+                                         t-att-src="image_data_uri(o.report_qr_sunat)"
                                          alt="QR SUNAT"/>
                                 </td>
                                 <td>

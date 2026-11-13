@@ -323,9 +323,8 @@
                             <tr><td class="single-title">Mas informacion</td></tr>
                             <tr class="section-body">
                                 <td>
-                                    <t t-set="qr_url" t-value="o._l10n_pe_edi_get_qr()"/>
-                                    <img t-if="qr_url" class="bottom-qr"
-                                         t-att-src="'/report/barcode/?barcode_type=QR&amp;value=%s&amp;width=220&amp;height=220&amp;quiet=0' % quote_plus(qr_url)"
+                                    <img t-if="o.report_qr_sunat" class="bottom-qr"
+                                         t-att-src="image_data_uri(o.report_qr_sunat)"
                                          alt="QR SUNAT"/>
                                 </td>
                             </tr>
