@@ -63,6 +63,8 @@
                         width: 50%;
                         padding: 1.2mm 1.6mm 0.8mm;
                         vertical-align: top;
+                        font-size: 6.2px;
+                        line-height: 1.12;
                     }
                     .fdc-purchase .fdc-label { font-weight: 700; }
                     .fdc-purchase .fdc-meta {
@@ -70,17 +72,22 @@
                         margin-bottom: 2mm;
                         background: #eef1f3;
                     }
-                    .fdc-purchase .fdc-meta td { padding: 1.2mm 1.8mm; vertical-align: top; }
+                    .fdc-purchase .fdc-meta td {
+                        padding: 1mm 1.8mm;
+                        vertical-align: top;
+                        font-size: 6.3px;
+                        line-height: 1.1;
+                    }
                     .fdc-purchase .fdc-lines {
                         table-layout: fixed;
-                        font-size: 6.2px;
-                        line-height: 1.08;
+                        font-size: 6.6px;
+                        line-height: 1.1;
                     }
                     .fdc-purchase .fdc-lines th {
                         padding: 1mm 1.1mm;
                         border-bottom: 0.35mm solid #171717;
                         text-align: left;
-                        font-size: 6.5px;
+                        font-size: 6.7px;
                         font-weight: 700;
                     }
                     .fdc-purchase .fdc-lines td {
@@ -146,13 +153,13 @@
                                  alt="FDC Corporation"/>
                         </td>
                         <td class="fdc-company">
-                            <div class="fdc-company-name"><span t-field="o.company_id.name"/></div>
+                            <div class="fdc-company-name"><span t-out="o.report_clean_text(o.company_id.name)"/></div>
                             <div>
-                                <span t-if="o.company_id.street" t-field="o.company_id.street"/>
-                                <t t-if="o.company_id.street2">, <span t-field="o.company_id.street2"/></t>
+                                <span t-if="o.company_id.street" t-out="o.report_clean_text(o.company_id.street)"/>
+                                <t t-if="o.company_id.street2">, <span t-out="o.report_clean_text(o.company_id.street2)"/></t>
                             </div>
                             <div>
-                                <span t-if="o.company_id.city" t-field="o.company_id.city"/>
+                                <span t-if="o.company_id.city" t-out="o.report_clean_text(o.company_id.city)"/>
                                 <t t-if="o.company_id.zip"> - <span t-field="o.company_id.zip"/></t>
                             </div>
                             <div t-if="o.company_id.vat">RUC: <span t-field="o.company_id.vat"/></div>
@@ -162,7 +169,7 @@
                             <div class="fdc-doc-title">Orden de Compra</div>
                             <div style="font-weight:700;">#<span t-field="o.name"/></div>
                             <div style="margin-top:1.8mm;">
-                                <span class="fdc-label">Fecha de Emisi&#243;n: </span>
+                                <span class="fdc-label">Fecha de Emision: </span>
                                 <span t-field="o.date_order" t-options="{'widget':'date'}"/>
                             </div>
                         </td>
@@ -171,36 +178,36 @@
 
                 <table>
                     <tr>
-                        <td class="fdc-section-title" style="width:50%;">Direcci&#243;n de env&#237;o</td>
-                        <td class="fdc-section-title" style="width:50%;">Informaci&#243;n del proveedor</td>
+                        <td class="fdc-section-title" style="width:50%;">Direccion de envio</td>
+                        <td class="fdc-section-title" style="width:50%;">Informacion del proveedor</td>
                     </tr>
                 </table>
                 <table class="fdc-info">
                     <tr>
                         <td>
-                            <div class="fdc-label"><span t-field="shipping.name"/></div>
+                            <div class="fdc-label"><span t-out="o.report_clean_text(shipping.name)"/></div>
                             <div>
-                                <span t-if="shipping.street" t-field="shipping.street"/>
-                                <t t-if="shipping.street2">, <span t-field="shipping.street2"/></t>
-                                <t t-if="shipping.city">, <span t-field="shipping.city"/></t>
-                                <t t-if="shipping.state_id">, <span t-field="shipping.state_id"/></t>
-                                <t t-if="shipping.country_id">, <span t-field="shipping.country_id"/></t>
+                                <span t-if="shipping.street" t-out="o.report_clean_text(shipping.street)"/>
+                                <t t-if="shipping.street2">, <span t-out="o.report_clean_text(shipping.street2)"/></t>
+                                <t t-if="shipping.city">, <span t-out="o.report_clean_text(shipping.city)"/></t>
+                                <t t-if="shipping.state_id">, <span t-out="o.report_clean_text(shipping.state_id.name)"/></t>
+                                <t t-if="shipping.country_id">, <span t-out="o.report_clean_text(shipping.country_id.name)"/></t>
                             </div>
                             <div t-if="shipping.phone"><span class="fdc-label">Tel: </span><span t-field="shipping.phone"/></div>
                             <div t-if="shipping.vat"><span class="fdc-label">RUC: </span><span t-field="shipping.vat"/></div>
                         </td>
                         <td>
-                            <div class="fdc-label"><span t-field="o.partner_id.name"/></div>
+                            <div class="fdc-label"><span t-out="o.report_clean_text(o.partner_id.name)"/></div>
                             <div>
-                                <span t-if="o.partner_id.street" t-field="o.partner_id.street"/>
-                                <t t-if="o.partner_id.street2">, <span t-field="o.partner_id.street2"/></t>
-                                <t t-if="o.partner_id.city">, <span t-field="o.partner_id.city"/></t>
-                                <t t-if="o.partner_id.state_id">, <span t-field="o.partner_id.state_id"/></t>
-                                <t t-if="o.partner_id.country_id">, <span t-field="o.partner_id.country_id"/></t>
+                                <span t-if="o.partner_id.street" t-out="o.report_clean_text(o.partner_id.street)"/>
+                                <t t-if="o.partner_id.street2">, <span t-out="o.report_clean_text(o.partner_id.street2)"/></t>
+                                <t t-if="o.partner_id.city">, <span t-out="o.report_clean_text(o.partner_id.city)"/></t>
+                                <t t-if="o.partner_id.state_id">, <span t-out="o.report_clean_text(o.partner_id.state_id.name)"/></t>
+                                <t t-if="o.partner_id.country_id">, <span t-out="o.report_clean_text(o.partner_id.country_id.name)"/></t>
                             </div>
                             <div t-if="o.partner_id.phone"><span class="fdc-label">Tel: </span><span t-field="o.partner_id.phone"/></div>
                             <div t-if="o.partner_id.vat"><span class="fdc-label">RUC: </span><span t-field="o.partner_id.vat"/></div>
-                            <div t-if="o.payment_term_id"><span class="fdc-label">Condici&#243;n de pago: </span><span t-field="o.payment_term_id"/></div>
+                            <div t-if="o.payment_term_id"><span class="fdc-label">Condicion de pago: </span><span t-out="o.report_clean_text(o.payment_term_id.name)"/></div>
                         </td>
                     </tr>
                 </table>
@@ -212,7 +219,7 @@
                         <col style="width:25%;"/>
                     </colgroup>
                     <tr>
-                        <td><span class="fdc-label">COMPRADOR</span><br/><span t-field="o.user_id"/></td>
+                        <td><span class="fdc-label">COMPRADOR</span><br/><span t-out="o.report_clean_text(o.user_id.name)"/></td>
                         <td>
                             <span class="fdc-label">FECHA DE ENTREGA</span><br/>
                             <span t-if="o.date_planned" t-field="o.date_planned" t-options="{'widget':'date'}"/>
@@ -243,7 +250,7 @@
                     <tbody>
                         <t t-foreach="o.order_line.filtered(lambda line: line.display_type or line.product_qty != 0)" t-as="line">
                             <tr t-if="not line.display_type">
-                                <td class="fdc-description"><span t-field="line.name"/></td>
+                                <td class="fdc-description"><span t-out="o.report_clean_text(line.name)"/></td>
                                 <td class="fdc-number">
                                     <span t-field="line.product_qty"/><br/>
                                     <span t-field="line.product_uom_id"/>
@@ -262,10 +269,10 @@
                                 </td>
                             </tr>
                             <tr t-elif="line.display_type in ('line_section', 'line_subsection')" class="fdc-section-line">
-                                <td colspan="6"><strong t-field="line.name"/></td>
+                                <td colspan="6"><strong t-out="o.report_clean_text(line.name)"/></td>
                             </tr>
                             <tr t-else="">
-                                <td colspan="6"><em t-field="line.name"/></td>
+                                <td colspan="6"><em t-out="o.report_clean_text(line.name)"/></td>
                             </tr>
                         </t>
                     </tbody>
@@ -296,7 +303,7 @@
                             </td>
                             <td style="text-align:center;">
                                 <div t-if="o.company_id.website"><span t-field="o.company_id.website"/></div>
-                                <div>P&#225;gina <span class="page"/> / <span class="topage"/></div>
+                                <div>Pagina <span class="page"/> / <span class="topage"/></div>
                             </td>
                             <td style="text-align:right;">
                                 <div t-if="o.company_id.phone"><span t-field="o.company_id.phone"/></div>

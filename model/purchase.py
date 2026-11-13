@@ -22,3 +22,21 @@ class PurchaseOrder(models.Model):
 
         for order in self:
             order.report_top_line = encoded_asset
+
+    def report_clean_text(self, value):
+        """Repair UTF-8 text that was previously decoded as Latin-1."""
+        if not value:
+            return ""
+        text = str(value)
+        mojibake_markers = ("Ã", "Â", "â€", "ðŸ")
+        for _iteration in range(2):
+            if not any(marker in text for marker in mojibake_markers):
+                break
+            try:
+                repaired = text.encode("latin-1").decode("utf-8")
+            except (UnicodeEncodeError, UnicodeDecodeError):
+                break
+            if repaired == text:
+                break
+            text = repaired
+        return text
