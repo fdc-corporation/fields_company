@@ -396,7 +396,7 @@
                                 <tbody>
                                     <tr t-foreach="payment_term_details" t-as="term">
                                         <td><span t-out="term_index + 1"/></td>
-                                        <td><span t-out="term.get('date')" t-options="{'widget':'date'}"/></td>
+                                        <td><span t-out="term.get('date') or ''"/></td>
                                         <td>
                                             <span t-out="term.get('amount') or 0.0"
                                                   t-options="{'widget':'monetary','display_currency':o.currency_id}"/>
