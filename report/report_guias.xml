@@ -105,6 +105,20 @@
                                 border: 0.3mm solid #555;
                             }
                             .fdc-guide .bottom-qr { width: 29mm; height: 29mm; object-fit: contain; }
+                            .fdc-guide .section,
+                            .fdc-guide .section *,
+                            .fdc-guide .moves,
+                            .fdc-guide .moves * {
+                                font-size: 6.5px !important;
+                                line-height: 1.15 !important;
+                            }
+                            .fdc-guide .section-title td,
+                            .fdc-guide .single-title { padding: 0.8mm 2mm !important; }
+                            .fdc-guide .section-body td,
+                            .fdc-guide .transport-grid > tbody > tr > td { padding: 0.8mm 2mm !important; }
+                            .fdc-guide .moves th { padding: 0.7mm 2mm !important; }
+                            .fdc-guide .moves td { padding: 0.7mm 2mm !important; }
+                            .fdc-guide .detail-table td { padding: 0.25mm 0 !important; }
                         </style>
 
                         <div class="guide-header">
