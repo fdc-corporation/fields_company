@@ -103,11 +103,19 @@
                         height: 18mm;
                         border-top: 0.35mm solid #171717;
                     }
-                    .fdc-purchase .fdc-totals {
+                    .fdc-purchase .fdc-totals-wrap {
                         position: absolute;
                         top: 0;
                         right: 0;
                         width: 38% !important;
+                        margin: 0 !important;
+                        padding: 0 !important;
+                        background: #eef1f3;
+                    }
+                    .fdc-purchase .fdc-totals {
+                        width: 100% !important;
+                        margin: 0 !important;
+                        padding: 0 !important;
                         background: #eef1f3;
                     }
                     .fdc-purchase .fdc-totals td {
@@ -288,12 +296,14 @@
                 </table>
 
                 <div class="fdc-total-area">
-                    <table class="fdc-totals">
-                        <t t-call="purchase.document_tax_totals">
-                            <t t-set="tax_totals" t-value="o.tax_totals"/>
-                            <t t-set="currency" t-value="o.currency_id"/>
-                        </t>
-                    </table>
+                    <div class="fdc-totals-wrap">
+                        <table class="fdc-totals">
+                            <t t-call="purchase.document_tax_totals">
+                                <t t-set="tax_totals" t-value="o.tax_totals"/>
+                                <t t-set="currency" t-value="o.currency_id"/>
+                            </t>
+                        </table>
+                    </div>
                 </div>
 
                 <div t-if="o.note" class="fdc-notes">
