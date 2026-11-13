@@ -9,25 +9,26 @@
                     .fdc-purchase {
                         position: relative;
                         box-sizing: border-box;
-                        width: 210mm;
+                        width: 210mm !important;
+                        max-width: 210mm !important;
                         min-height: 297mm;
-                        margin: 0;
-                        padding: 0 5mm 14mm;
+                        margin: 0 !important;
+                        padding: 0 7mm 14mm !important;
                         color: #080808;
                         font-family: Arial, Helvetica, sans-serif;
-                        font-size: 7.2px;
+                        font-size: 7.8px;
                         line-height: 1.12;
                     }
                     .fdc-purchase * { box-sizing: border-box; }
                     .fdc-purchase table { width: 100%; border-collapse: collapse; }
                     .fdc-purchase .fdc-top-line {
                         display: block;
-                        width: 210mm;
+                        width: calc(100% + 10mm);
                         height: 2.5mm;
                         margin: 0 -5mm 3mm;
                     }
                     .fdc-purchase .fdc-brand-fallback {
-                        width: 210mm;
+                        width: calc(100% + 10mm);
                         height: 2.5mm;
                         margin: 0 -5mm 3mm;
                         background: #248fbc;
@@ -39,22 +40,22 @@
                     .fdc-purchase .fdc-logo { max-width: 31mm; max-height: 16mm; object-fit: contain; }
                     .fdc-purchase .fdc-company {
                         text-align: center;
-                        font-size: 6.4px;
+                        font-size: 7px;
                         line-height: 1.12;
                     }
-                    .fdc-purchase .fdc-company-name { font-size: 7.2px; font-weight: 700; }
-                    .fdc-purchase .fdc-docbox { text-align: center; font-size: 6.7px; }
+                    .fdc-purchase .fdc-company-name { font-size: 7.8px; font-weight: 700; }
+                    .fdc-purchase .fdc-docbox { text-align: center; font-size: 7.2px; }
                     .fdc-purchase .fdc-doc-title {
                         margin-bottom: 2mm;
                         padding: 1.5mm 1mm;
                         background: #eaf1f4;
-                        font-size: 8px;
+                        font-size: 8.5px;
                         font-weight: 700;
                     }
                     .fdc-purchase .fdc-section-title {
                         padding: 1.1mm 1.6mm;
                         background: #eef1f3;
-                        font-size: 7px;
+                        font-size: 7.5px;
                         font-weight: 700;
                         text-transform: uppercase;
                     }
@@ -63,8 +64,8 @@
                         width: 50%;
                         padding: 1.2mm 1.6mm 0.8mm;
                         vertical-align: top;
-                        font-size: 6.2px;
-                        line-height: 1.12;
+                        font-size: 7px;
+                        line-height: 1.16;
                     }
                     .fdc-purchase .fdc-label { font-weight: 700; }
                     .fdc-purchase .fdc-meta {
@@ -75,23 +76,23 @@
                     .fdc-purchase .fdc-meta td {
                         padding: 1mm 1.8mm;
                         vertical-align: top;
-                        font-size: 6.3px;
-                        line-height: 1.1;
+                        font-size: 7px;
+                        line-height: 1.14;
                     }
                     .fdc-purchase .fdc-lines {
                         table-layout: fixed;
-                        font-size: 6.6px;
-                        line-height: 1.1;
+                        font-size: 7px;
+                        line-height: 1.12;
                     }
                     .fdc-purchase .fdc-lines th {
                         padding: 1mm 1.1mm;
                         border-bottom: 0.35mm solid #171717;
                         text-align: left;
-                        font-size: 6.7px;
+                        font-size: 7.2px;
                         font-weight: 700;
                     }
                     .fdc-purchase .fdc-lines td {
-                        padding: 1mm 1.1mm;
+                        padding: 1.2mm 1.1mm;
                         vertical-align: top;
                     }
                     .fdc-purchase .fdc-lines tbody tr:nth-child(even) { background: #eef1f3; }
@@ -122,12 +123,12 @@
                     .fdc-purchase .fdc-notes { margin-top: 2mm; font-size: 6.5px; }
                     .fdc-purchase .fdc-footer {
                         position: absolute;
-                        right: 5mm;
+                        right: 7mm;
                         bottom: 3mm;
-                        left: 5mm;
+                        left: 7mm;
                         padding-top: 1.4mm;
                         border-top: 0.3mm solid #111;
-                        font-size: 5.7px;
+                        font-size: 6.2px;
                         line-height: 1.22;
                     }
                     .fdc-purchase .fdc-footer td { width: 33.333%; vertical-align: top; }
