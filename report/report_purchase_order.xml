@@ -300,7 +300,9 @@
                             </td>
                             <td style="text-align:right;">
                                 <div t-if="o.company_id.phone"><span t-field="o.company_id.phone"/></div>
-                                <div t-if="o.company_id.mobile"><span t-field="o.company_id.mobile"/></div>
+                                <div t-if="o.company_id.partner_id.mobile">
+                                    <span t-field="o.company_id.partner_id.mobile"/>
+                                </div>
                             </td>
                         </tr>
                     </table>
