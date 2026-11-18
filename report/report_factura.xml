@@ -57,7 +57,8 @@
                             .fdc-invoice .color-line { display: block; width: 100%; height: 2mm; object-fit: fill; }
                             .fdc-invoice .header-table { width: calc(100% - 10mm); margin: 2mm 5mm 0; table-layout: fixed; }
                             .fdc-invoice .header-table td { padding: 0 2mm; border: 0; vertical-align: top; }
-                            .fdc-invoice .company-logo { max-width: 42mm; max-height: 20mm; object-fit: contain; }
+                            .fdc-invoice .company-logo { width: 28.746mm; height: 15.53mm; object-fit: contain; }
+                            .fdc-invoice .invoice-header * { font-size: 9.30px !important; }
                             .fdc-invoice .company-data { text-align: center; font-size: 8.5px; line-height: 1.16; }
                             .fdc-invoice .company-data strong { font-size: 9.5px; }
                             .fdc-invoice .document-data { text-align: center; font-size: 8.5px; }

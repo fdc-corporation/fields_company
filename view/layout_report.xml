@@ -5,22 +5,22 @@
 			<div t-attf-class="header o_company_#{company.id}_layout {{report_type != 'pdf' and 'h-0'}}">
 				<div class="row" style="padding:35px 0px 0px 0px;">
 					<div class="col-4 mb4 mt4">
-						<img t-if="company.logo" t-att-src="image_data_uri(company.logo)" style="max-height: 120px;margin:-20px 0px 0px 0px;" alt="Logo" />
+						<img t-if="company.logo" t-att-src="image_data_uri(company.logo)" style="width: 28.746mm; height: 15.53mm; object-fit: contain;margin:-20px 0px 0px 0px;" alt="Logo" />
 					</div>
 					<div class="col-4 mb4" style="text-align:center;">
-						<p style="margin-bottom:-1px; font-size:13px;">
+						<p style="margin-bottom:-1px; font-size:9.30px;">
 							FDC CORPORATION E.I.R.L
 						</p>
-						<p style="margin-bottom:-1px; font-size:12px;">
+						<p style="margin-bottom:-1px; font-size:9.30px;">
 							Av. Separadora Industrial 2103
 						</p>
-						<p style="margin-bottom:-1px; font-size:12px;">
+						<p style="margin-bottom:-1px; font-size:9.30px;">
 							Lima - Ate - 15011
 						</p>
-						<p style="margin-bottom:-1px; font-size:12px;">
+						<p style="margin-bottom:-1px; font-size:9.30px;">
 							20601356326
 						</p>
-						<p style="margin-bottom:-1px; font-size:11px; font-family: 'Courgette', cursive; ">
+						<p style="margin-bottom:-1px; font-size:9.30px; font-family: 'Courgette', cursive; ">
 							Ofrecemos soluciones..... Generamos Confianza
 						</p>
 					</div>
@@ -35,18 +35,18 @@
 		</xpath>
 		<xpath expr="//div[contains(@t-attf-class, 'footer')]" position="replace">
 			<div t-attf-class="footer o_company_#{company.id}_layout {{report_type != 'pdf' and 'position-relative mt-auto mx-n5'}}">
-				<div class="row" style="border-top: 1px solid black;">
+				<div class="row" style="border-top: 1px solid black; font-size:9.30px;">
 					<div class="col-4 text-start">
-						<p style="font-size:12px;margin:0px 0px -4px 0px;">
+						<p style="font-size:9.30px;margin:0px 0px -4px 0px;">
 							servicios@fdc-corporation.com
 						</p>
-						<p style="font-size:12px;margin:0px 0px -4px 0px;">
+						<p style="font-size:9.30px;margin:0px 0px -4px 0px;">
 							ventas@fdc-corporation.com
 						</p>
 					</div>
 					<div class="text-center col-4">
 						<ul class="" />
-						<p style="font-size:12px;margin:0px 0px -3px 0px;">
+						<p style="font-size:9.30px;margin:0px 0px -3px 0px;">
 							https://fdc-corporation.com
 						</p>
 						<div t-if="report_type == 'pdf'" class="text-muted">
@@ -78,10 +78,10 @@
 						</div>
 					</div>
 					<div class=" text-end col-4">
-						<p style="font-size:12px;margin:0px 0px -4px 0px;">
+						<p style="font-size:9.30px;margin:0px 0px -4px 0px;">
 							+51 981 094 754
 						</p>
-						<p style="font-size:12px;">
+						<p style="font-size:9.30px;">
 							+51 960 217 220
 						</p>
 					</div>

@@ -35,7 +35,7 @@
                     }
                     .fdc-purchase .fdc-head { table-layout: fixed; margin: 2mm 5mm 0; width: calc(100% - 10mm) !important; }
                     .fdc-purchase .fdc-head td { border: 0 !important; padding: 0 2mm !important; vertical-align: top; }
-                    .fdc-purchase .fdc-logo { max-width: 38mm; max-height: 17mm; object-fit: contain; }
+                    .fdc-purchase .fdc-logo { width: 28.746mm; height: 15.53mm; object-fit: contain; }
                     .fdc-purchase .fdc-company {
                         text-align: center;
                         font-size: 7px;
@@ -146,6 +146,7 @@
                         line-height: 1.22;
                         background: #fff;
                     }
+                    .fdc-purchase .fdc-header *, .fdc-purchase .fdc-footer * { font-size: 9.30px !important; }
                     .fdc-purchase .fdc-footer td { width: 33.333%; padding: 0 !important; border: 0 !important; vertical-align: top; }
                     .fdc-purchase .fdc-info,
                     .fdc-purchase .fdc-info *,
@@ -248,19 +249,20 @@
                             </div>
                             <div t-if="o.partner_id.phone"><span class="fdc-label">Tel: </span><span t-field="o.partner_id.phone"/></div>
                             <div t-if="o.partner_id.vat"><span class="fdc-label">RUC: </span><span t-field="o.partner_id.vat"/></div>
-                            <div t-if="o.payment_term_id"><span class="fdc-label">Condicion de pago: </span><span t-out="o.report_clean_text(o.payment_term_id.name)"/></div>
                         </td>
                     </tr>
                 </table>
 
                 <table class="fdc-meta">
                     <colgroup>
-                        <col style="width:50%;"/>
+                        <col style="width:25%;"/>
+                        <col style="width:25%;"/>
                         <col style="width:25%;"/>
                         <col style="width:25%;"/>
                     </colgroup>
                     <tr>
                         <td><span class="fdc-label">COMPRADOR</span><br/><span t-out="o.report_clean_text(o.user_id.name)"/></td>
+                        <td><t t-if="o.payment_term_id"><span class="fdc-label">T&#201;RMINO DE PAGO</span><br/><span t-out="o.report_clean_text(o.payment_term_id.name)"/></t></td>
                         <td>
                             <span class="fdc-label">FECHA DE ENTREGA</span><br/>
                             <span t-if="o.date_planned" t-field="o.date_planned" t-options="{'widget':'date'}"/>

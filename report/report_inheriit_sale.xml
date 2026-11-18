@@ -13,7 +13,7 @@
 						.fdc-sale-report *{box-sizing:border-box}.fdc-sale-header{position:relative;height:25mm;margin:0 -5mm 2mm}
 						.fdc-sale-header .color-line{display:block;width:100%;height:2mm;object-fit:fill}
 						.fdc-sale-header-table{border-collapse:collapse;margin:2mm 5mm 0;width:calc(100% - 10mm)!important}.fdc-sale-header-table td{border:0!important;padding:0 2mm!important;vertical-align:top}
-						.fdc-sale-logo{max-width:38mm;max-height:17mm}.fdc-company{text-align:center;font-size:7px;line-height:1.12}.fdc-company strong{font-size:8px}
+						.fdc-sale-logo{width:28.746mm;height:15.53mm;object-fit:contain}.fdc-company{text-align:center;font-size:7px;line-height:1.12}.fdc-company strong{font-size:8px}
 						.fdc-doc-box{text-align:center;font-size:8px}.fdc-doc-title{background:#e8f1f5;font-size:9px;font-weight:700;padding:2mm 1mm;margin-bottom:2mm}
 						.fdc-sale-report table{width:100%!important;font-size:8px!important;line-height:1.18}.fdc-sale-report td,.fdc-sale-report th{padding:1.2mm 1.5mm!important}.fdc-sale-report p{margin-bottom:1mm}
 						.fdc-sale-report #informations{margin:0 0 2mm!important}.fdc-sale-report #informations table{margin:0!important;border:0!important}.fdc-sale-report #informations tr{background:#fff!important}
@@ -25,6 +25,7 @@
 						.fdc-sale-report .fdc-totals-row{display:block;position:relative;width:100%!important;height:18mm;clear:both;overflow:visible}.fdc-sale-report .fdc-totals{position:absolute!important;top:0;right:0!important;float:none!important;width:38%!important;margin:0!important;padding:0!important}.fdc-sale-report .fdc-totals table{width:100%!important;margin:0!important}.fdc-sale-report .fdc-totals td{padding:1mm 1.5mm!important}.fdc-sale-report .fdc-totals td:last-child{text-align:right!important}
 						.fdc-sale-report .fdc-brand-strip{position:absolute;left:5mm;right:5mm;bottom:11mm;margin:0!important;height:11mm;background:#fff}.fdc-sale-report .fdc-brand-strip td{width:33.333%;height:11mm;text-align:center;vertical-align:middle;border:0!important}.fdc-sale-report .fdc-brand-strip img{width:auto!important;height:auto!important;max-width:36mm!important;max-height:10mm!important;object-fit:contain}
 						.fdc-sale-footer{position:absolute;left:0;right:0;bottom:0;height:8mm;border-top:0.3mm solid #222;padding-top:1mm;font-size:6.5px;background:#fff}.fdc-sale-footer table{width:100%;border:0!important}.fdc-sale-footer td{padding:0!important;border:0!important;width:33.333%}
+						.fdc-sale-report .fdc-sale-header *, .fdc-sale-report .fdc-sale-footer * { font-size: 9.30px !important; }
 						.fdc-sale-report{font-size:10px;line-height:1.2}
 						.fdc-sale-report #informations,.fdc-sale-report #informations *,.fdc-sale-report .o_main_table,.fdc-sale-report .o_main_table *,.fdc-sale-report .fdc-totals,.fdc-sale-report .fdc-totals *{font-size:10px!important;line-height:1.2!important}
 						.fdc-sale-report h5,.fdc-sale-report .o_main_table thead th{font-size:10.5px!important;line-height:1.2!important}
@@ -43,8 +44,8 @@
 						<table class="table table-sm fdc-info-table"><tbody>
 							<tr class="fdc-info-title"><td colspan="3">DATOS DEL CLIENTE <span style="color:#e31e24;">(*)</span></td></tr>
 							<tr><td style="width:34%;">Cliente: <strong t-field="doc.partner_id.name"/></td><td style="width:44%;">Direcci&#243;n: <span t-field="doc.partner_id.street"/></td><td style="width:22%;">RUC: <span t-field="doc.partner_id.vat"/></td></tr>
-							<tr class="fdc-info-title"><td colspan="3">DATOS DE COTIZACI&#211;N <span style="color:#e31e24;">(*)</span></td></tr>
-							<tr><td>Fecha de cotizaci&#243;n: <span t-field="doc.date_order" t-options="{'widget':'date'}"/></td><td>Condici&#243;n de pago: <span t-field="doc.payment_term_id"/></td><td>Direcci&#243;n de entrega: <span t-field="doc.partner_shipping_id.name"/></td></tr>
+							<tr class="fdc-info-title"><td>DATOS DE COTIZACI&#211;N <span style="color:#e31e24;">(*)</span></td><td><t t-if="doc.payment_term_id">T&#201;RMINO DE PAGO<br/><span style="font-weight:normal;" t-field="doc.payment_term_id.name"/></t></td><td/></tr>
+							<tr><td>Fecha de cotizaci&#243;n: <span t-field="doc.date_order" t-options="{'widget':'date'}"/></td><td colspan="2">Direcci&#243;n de entrega: <span t-field="doc.partner_shipping_id.name"/></td></tr>
 							<tr><td>Vencimiento: <span t-field="doc.validity_date"/></td><td>Moneda: <span t-field="doc.currency_id"/></td><td/></tr>
 							<tr class="fdc-info-title"><td colspan="3">DATOS DEL VENDEDOR <span style="color:#e31e24;">(*)</span></td></tr>
 							<tr><td>Vendedor: <span t-field="doc.user_id.name"/></td><td>Compa&#241;&#237;a: <span t-field="doc.company_id.name"/></td><td>Celular: <span t-field="doc.user_id.phone"/></td></tr>
