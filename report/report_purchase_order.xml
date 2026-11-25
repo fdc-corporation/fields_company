@@ -94,6 +94,7 @@
                         vertical-align: top;
                     }
                     .fdc-purchase .fdc-lines tbody tr:nth-child(even) { background: #eef1f3; }
+                    .fdc-purchase .fdc-lines .fdc-section-line td strong { font-weight: 700 !important; }
                     .fdc-purchase .fdc-lines .fdc-section-line { background: #dfe5e8 !important; }
                     .fdc-purchase .fdc-number { text-align: right; white-space: nowrap; }
                     .fdc-purchase .fdc-description { white-space: pre-line; overflow-wrap: anywhere; }

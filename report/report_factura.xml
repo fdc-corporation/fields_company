@@ -105,6 +105,7 @@
                             .fdc-invoice .invoice-lines tbody tr:nth-child(even) { background: #fafafa; }
                             .fdc-invoice .right { text-align: right; white-space: nowrap; }
                             .fdc-invoice .center { text-align: center; }
+                            .fdc-invoice .line-section td span { font-weight: 700 !important; }
                             .fdc-invoice .line-section { background: #e8edef !important; font-weight: 700; }
                             .fdc-invoice .summary-grid { margin-top: 2mm; table-layout: fixed; }
                             .fdc-invoice .summary-grid > tbody > tr > td { padding: 0 1.5mm; vertical-align: top; }
