@@ -38,6 +38,7 @@ class SaleOrder(models.Model):
     report_top_line = fields.Binary(compute='_compute_report_assets')
     report_logo_storage = fields.Binary(compute='_compute_report_assets')
     report_logo_chicago = fields.Binary(compute='_compute_report_assets')
+    report_logo_atlas_copco = fields.Binary(compute='_compute_report_assets')
     report_logo_pneumatech = fields.Binary(compute='_compute_report_assets')
 
     def _compute_report_assets(self):
@@ -45,6 +46,7 @@ class SaleOrder(models.Model):
             'report_top_line': 'fdc-top-line.png',
             'report_logo_storage': 'storage-compat.png',
             'report_logo_chicago': 'chicago-pneumatic.png',
+            'report_logo_atlas_copco': 'atlas-copco-group.png',
             'report_logo_pneumatech': 'pneumatech.png',
         }
         values = {}
